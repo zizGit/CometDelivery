@@ -16,6 +16,7 @@ namespace CometFoodDelivery.Controllers
         //[HttpGet]
         //public async Task<List<User>> Get() =>
         //    await _usersService.GetAsync();
+
         [HttpGet]
         public async Task<string> Get() =>
             "123456897";
