@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using System.Text.Json.Serialization;
 
 namespace CometFoodDelivery.Models
 {
@@ -10,6 +11,7 @@ namespace CometFoodDelivery.Models
         public string? Id { get; set; }
 
         [BsonElement("Name")]
+        [JsonPropertyName("Name")]
         //null! - значение null допустимо
         public string Name { get; set; } = null!;
 

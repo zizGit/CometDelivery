@@ -13,15 +13,18 @@ namespace CometFoodDelivery.Controllers
         public UsersController(UsersService usersService) =>
             _usersService = usersService;
 
-        //[HttpGet]
-        //public async Task<List<User>> Get() =>
-        //    await _usersService.GetAsync();
+        [HttpGet]
+        public async Task<List<User>> Get() =>
+            await _usersService.GetAsync();
 
+        //это работает
+        /*
         [HttpGet]
         public async Task<string> Get() =>
             "123456897";
+        */
 
-        [HttpGet("get/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<User>> Get(string id)
         {
             var user = await _usersService.GetAsync(id);

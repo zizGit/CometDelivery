@@ -10,7 +10,9 @@ builder.Services.Configure<DatabaseSettings>(
     builder.Configuration.GetSection("Database"));
 
 builder.Services.AddSingleton<UsersService>();
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(
+        options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 
 var app = builder.Build();
 
@@ -29,6 +31,7 @@ var client = new MongoClient(settings);
 
 app.MapGet("/", () => "Hello World!");
 app.MapControllers();
+
 /*
 app.MapPost("/user", async () => {
     await 
