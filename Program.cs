@@ -9,7 +9,7 @@ using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("Database"));
+builder.Services.Configure<UserDatabaseSettings>(builder.Configuration.GetSection("UserDatabase"));
 
 builder.Services.AddSingleton<UsersService>();
 

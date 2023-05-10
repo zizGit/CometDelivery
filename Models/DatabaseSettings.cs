@@ -1,6 +1,6 @@
 ﻿namespace CometFoodDelivery.Models
 {
-    public class DatabaseSettings
+    public class UserDatabaseSettings
     {
         public string ConnectionString { get; set; } = null!;
 
