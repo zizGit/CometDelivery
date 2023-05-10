@@ -53,7 +53,8 @@ namespace CometFoodDelivery.Controllers
 
             updatedUser.Id = user.Id;
             await _service.UpdateAsync(id, updatedUser);
-            return NoContent();
+            //return NoContent();
+            return Ok($"StatusCode {Response.StatusCode}");
             //return CreatedAtRoute("GetById", new { id = updatedUser.Id }, updatedUser);
 
         }
@@ -68,7 +69,8 @@ namespace CometFoodDelivery.Controllers
             }
 
             await _service.DeleteAsync(id);
-            return NoContent();
+            return Ok($"StatusCode {Response.StatusCode}");
+            //return NoContent();
         }
     }
 }
