@@ -1,7 +1,7 @@
 ﻿using CometFoodDelivery.Models;
 using CometFoodDelivery.Services;
 using Microsoft.AspNetCore.Mvc;
-
+using MongoDB.Bson;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,20 +18,13 @@ namespace CometFoodDelivery.Controllers
             _service = service;
         }
 
-        //это работает
-        /*
-        [HttpGet]
-        public async Task<string> Get() =>
-            "123456897";
-        */
-
         [HttpGet]
         public async Task<ActionResult<List<User>>> Get()
         {
             return await _service.GetAsync();
         }
 
-        [HttpGet("{id:length(24)}")]
+        [HttpGet("{id:length(24)}", Name = "GetById")]
         public async Task<ActionResult<User>> Get(string id)
         {
             var user = await _service.GetAsync(id);
@@ -46,7 +39,7 @@ namespace CometFoodDelivery.Controllers
         public async Task<ActionResult<User>> Post(User newUser)
         {
             await _service.CreateAsync(newUser);
-            return CreatedAtRoute(nameof(Get), new { id = newUser.Id }, newUser);
+            return CreatedAtRoute("GetById", new { id = newUser.Id }, newUser);
         }
 
         [HttpPut("{id:length(24)}")]
@@ -61,6 +54,8 @@ namespace CometFoodDelivery.Controllers
             updatedUser.Id = user.Id;
             await _service.UpdateAsync(id, updatedUser);
             return NoContent();
+            //return CreatedAtRoute("GetById", new { id = updatedUser.Id }, updatedUser);
+
         }
 
         [HttpDelete("{id:length(24)}")]
