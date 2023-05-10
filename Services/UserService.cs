@@ -11,9 +11,9 @@ namespace CometFoodDelivery.Services
     {
         private readonly IMongoCollection<User> _collection;
 
-        public UsersService(IOptions<UserDatabaseSettings> databaseSettings)
+        public UsersService(IOptions<UserDatabaseSettings> databaseSettings, IOptions<DatabaseConnectionStringSettings> connectionSettings)
         {
-            var client = new MongoClient(databaseSettings.Value.ConnectionString);
+            var client = new MongoClient(connectionSettings.Value.ConnectionString);
 
             var database = client.GetDatabase(databaseSettings.Value.DatabaseName);
 
