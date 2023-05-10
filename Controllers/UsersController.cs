@@ -1,9 +1,6 @@
 ﻿using CometFoodDelivery.Models;
 using CometFoodDelivery.Services;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace CometFoodDelivery.Controllers
 {
@@ -27,50 +24,78 @@ namespace CometFoodDelivery.Controllers
         [HttpGet("{id:length(24)}", Name = "GetById")]
         public async Task<ActionResult<User>> Get(string id)
         {
-            var user = await _service.GetAsync(id);
-            if (user == null)
+            try
             {
-                return NotFound();
+                var user = await _service.GetAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                return user;
             }
-            return user;
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult<User>> Post(User newUser)
         {
-            await _service.CreateAsync(newUser);
-            return CreatedAtRoute("GetById", new { id = newUser.Id }, newUser);
+            try
+            {
+                await _service.CreateAsync(newUser);
+                return CreatedAtRoute("GetById", new { id = newUser.Id }, newUser);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            } 
         }
 
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> Update(string id, User updatedUser)
         {
-            var user = await _service.GetAsync(id);
-            if (user == null)
+            try
             {
-                return NotFound();
+                var user = await _service.GetAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                updatedUser.Id = user.Id;
+                await _service.UpdateAsync(id, updatedUser);
+
+                return Ok($"StatusCode {Response.StatusCode}");
+                //return NoContent();
+                //return CreatedAtRoute("GetById", new { id = updatedUser.Id }, updatedUser);
             }
-
-            updatedUser.Id = user.Id;
-            await _service.UpdateAsync(id, updatedUser);
-            //return NoContent();
-            return Ok($"StatusCode {Response.StatusCode}");
-            //return CreatedAtRoute("GetById", new { id = updatedUser.Id }, updatedUser);
-
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> Delete(string id)
         {
-            var user = await _service.GetAsync(id);
-            if (user == null)
+            try
             {
-                return NotFound();
-            }
+                var user = await _service.GetAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
 
-            await _service.DeleteAsync(id);
-            return Ok($"StatusCode {Response.StatusCode}");
-            //return NoContent();
+                await _service.DeleteAsync(id);
+                return Ok($"StatusCode {Response.StatusCode}");
+                //return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

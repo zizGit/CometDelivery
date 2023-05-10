@@ -1,11 +1,5 @@
-using MongoDB.Driver;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 using CometFoodDelivery.Models;
 using CometFoodDelivery.Services;
-using Microsoft.AspNetCore.Hosting;
-
-using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
