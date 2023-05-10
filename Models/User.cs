@@ -1,20 +1,26 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
-using System.Text.Json.Serialization;
+//using System.Text.Json.Serialization;
 
 namespace CometFoodDelivery.Models
 {
     public class User
     {
+        // = null! - значение null допустимо
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
 
-        [BsonElement("Name")]
-        [JsonPropertyName("Name")]
-        //null! - значение null допустимо
-        public string Name { get; set; } = null!;
+        [BsonElement("name")]
+        public string? Name { get; set; }
 
-        public string Test { get; set; } = null!;
+        [BsonElement("age")]
+        public int Age { get; set; }
+
+        [BsonElement("email")]
+        public string Email { get; set; } = null;
+
+        [BsonElement("phone")]
+        public int Phone { get; set; }
     }
 }

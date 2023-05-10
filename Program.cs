@@ -3,16 +3,17 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using CometFoodDelivery.Models;
 using CometFoodDelivery.Services;
+using Microsoft.AspNetCore.Hosting;
+
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<DatabaseSettings>(
-    builder.Configuration.GetSection("Database"));
+builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("Database"));
 
 builder.Services.AddSingleton<UsersService>();
-builder.Services.AddControllers()
-    .AddJsonOptions(
-        options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -30,12 +31,7 @@ var client = new MongoClient(settings);
 
 
 app.MapGet("/", () => "Hello World!");
-app.MapControllers();
 
-/*
-app.MapPost("/user", async () => {
-    await 
-});
-*/
+app.MapControllers();
 
 app.Run();
