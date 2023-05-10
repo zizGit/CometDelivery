@@ -1,0 +1,42 @@
+.root {
+  position: relative;
+}
+.input {
+  border: 1px solid #eea840;
+  border-radius: 13px;
+  background: #ffffff;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  /* identical to box height, or 138% */
+
+  letter-spacing: 0.2px;
+
+  color: #2c3d78;
+
+  &:focus {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+  }
+}
+.icon {
+  width: 22px;
+  height: 22px;
+  opacity: 0.3;
+  position: absolute;
+  top: 14px;
+  right: 12px;
+}
+.clearIcon {
+  width: 18px;
+  height: 18px;
+  opacity: 0.3;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+}
