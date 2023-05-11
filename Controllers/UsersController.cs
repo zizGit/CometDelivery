@@ -29,7 +29,7 @@ namespace CometFoodDelivery.Controllers
                 var user = await _service.GetAsync(id);
                 if (user == null)
                 {
-                    return NotFound(Response.StatusCode);
+                    return NotFound();
                 }
                 return user;
             }
@@ -47,7 +47,7 @@ namespace CometFoodDelivery.Controllers
                 var user = await _service.GetEmailAsync(email);
                 if (user == null)
                 {
-                    return NotFound(Response.StatusCode);
+                    return NotFound();
                 }
                 return user;
             }
@@ -79,7 +79,7 @@ namespace CometFoodDelivery.Controllers
                 var user = await _service.GetEmailAsync(loginData.Email);
                 if (user == null)
                 {
-                    return NotFound(Response.StatusCode);
+                    return NotFound();
                 }
 
                 if (user.Email == loginData.Email && user.Pass == loginData.Pass) 
@@ -88,7 +88,7 @@ namespace CometFoodDelivery.Controllers
                 }
                 else 
                 {
-                    return BadRequest(Response.StatusCode);
+                    return BadRequest();
                 }
             }
             catch (Exception ex)
