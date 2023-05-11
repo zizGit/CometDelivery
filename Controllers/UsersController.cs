@@ -29,7 +29,7 @@ namespace CometFoodDelivery.Controllers
                 var user = await _service.GetAsync(id);
                 if (user == null)
                 {
-                    return NotFound();
+                    return NotFound(Response.StatusCode);
                 }
                 return user;
             }
@@ -47,7 +47,7 @@ namespace CometFoodDelivery.Controllers
                 var user = await _service.GetEmailAsync(email);
                 if (user == null)
                 {
-                    return NotFound();
+                    return NotFound(Response.StatusCode);
                 }
                 return user;
             }
@@ -71,6 +71,32 @@ namespace CometFoodDelivery.Controllers
             } 
         }
 
+        [HttpPost("login")]
+        public async Task<ActionResult<UserLogin>> Login(UserLogin loginData)
+        {
+            try
+            {
+                var user = await _service.GetEmailAsync(loginData.Email);
+                if (user == null)
+                {
+                    return NotFound(Response.StatusCode);
+                }
+
+                if (user.Email == loginData.Email && user.Pass == loginData.Pass) 
+                {
+                    return Ok(Response.StatusCode);
+                }
+                else 
+                {
+                    return BadRequest(Response.StatusCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> Update(string id, User updatedUser)
         {
@@ -85,7 +111,7 @@ namespace CometFoodDelivery.Controllers
                 updatedUser.Id = user.Id;
                 await _service.UpdateAsync(id, updatedUser);
 
-                return Ok($"StatusCode {Response.StatusCode}");
+                return Ok(Response.StatusCode);
                 //return NoContent();
                 //return CreatedAtRoute("GetById", new { id = updatedUser.Id }, updatedUser);
             }
@@ -107,7 +133,7 @@ namespace CometFoodDelivery.Controllers
                 }
 
                 await _service.DeleteAsync(id);
-                return Ok($"StatusCode {Response.StatusCode}");
+                return Ok(Response.StatusCode);
                 //return NoContent();
             }
             catch (Exception ex)

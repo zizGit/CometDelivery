@@ -19,7 +19,19 @@ namespace CometFoodDelivery.Models
         [BsonElement("email")]
         public string Email { get; set; }
 
+        [BsonElement("pass")]
+        public string Pass { get; set; }
+
         [BsonElement("phone")]
         public string Phone { get; set; }
+    }
+
+    public class UserLogin
+    {
+        [BsonElement("email")]
+        public string Email { get; set; }
+
+        [BsonElement("pass")]
+        public string Pass { get; set; }
     }
 }

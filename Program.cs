@@ -1,6 +1,5 @@
 using CometFoodDelivery.Models;
 using CometFoodDelivery.Services;
-using System.Runtime.InteropServices;
 
 //const string connectionUri = "mongodb+srv://user:user@cometdb.7ffayor.mongodb.net/?retryWrites=true&w=majority";
 

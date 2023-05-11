@@ -8,21 +8,18 @@
     public class UserDatabaseSettings
     {
         public string DatabaseName { get; set; } = null!;
-
         public string CollectionName { get; set; } = null!;
     }
 
     public class ShopsDatabaseSettings
     {
         public string DatabaseName { get; set; } = null!;
-
         public string CollectionName { get; set; } = null!;
     }
 
     public class ProdustsDatabaseSettings
     {
         public string DatabaseName { get; set; } = null!;
-
         public string CollectionName { get; set; } = null!;
     }
 }
