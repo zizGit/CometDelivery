@@ -23,6 +23,10 @@ namespace CometFoodDelivery.Services
         {
             return await _collection.Find(x => x.Id == id).FirstOrDefaultAsync();
         }
+        public async Task<User> GetEmailAsync(string email)
+        {
+            return await _collection.Find(x => x.Email == email).FirstOrDefaultAsync();
+        }
         public async Task<User> CreateAsync(User newUser)
         {
             await _collection.InsertOneAsync(newUser);

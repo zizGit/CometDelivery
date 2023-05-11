@@ -39,6 +39,24 @@ namespace CometFoodDelivery.Controllers
             }
         }
 
+        [HttpGet("email/{email}", Name = "GetUserByEmail")]
+        public async Task<ActionResult<User>> GetByEmail(string email)
+        {
+            try
+            {
+                var user = await _service.GetEmailAsync(email);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                return user;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult<User>> Post(User newUser)
         {
