@@ -11,9 +11,7 @@ namespace CometFoodDelivery.Services
         public UsersService(IOptions<UserDatabaseSettings> databaseSettings, IOptions<DatabaseConnectionStringSettings> connectionSettings)
         {
             var client = new MongoClient(connectionSettings.Value.ConnectionString);
-
             var database = client.GetDatabase(databaseSettings.Value.DatabaseName);
-
             _collection = database.GetCollection<User>(databaseSettings.Value.CollectionName);
         }
 

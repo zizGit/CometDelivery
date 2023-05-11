@@ -3,7 +3,7 @@ using MongoDB.Bson;
 
 namespace CometFoodDelivery.Models
 {
-    public class User
+    public class Shop
     {
         // ? - значение null допустимо
         [BsonId]
@@ -13,13 +13,16 @@ namespace CometFoodDelivery.Models
         [BsonElement("name")]
         public string Name { get; set; }
 
-        [BsonElement("age")]
-        public int? Age { get; set; }
+        [BsonElement("imageUrl")]
+        public int Url { get; set; }
 
-        [BsonElement("email")]
-        public string? Email { get; set; }
+        [BsonElement("types")]
+        public string type { get; set; }
 
-        [BsonElement("phone")]
-        public string Phone { get; set; }
+        [BsonElement("deliveryCost")]
+        public string Cost { get; set; }
+
+        [BsonElement("deliveryTime")]
+        public string Time { get; set; }
     }
 }

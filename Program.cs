@@ -12,6 +12,7 @@ builder.Services.Configure<ShopsDatabaseSettings>(builder.Configuration.GetSecti
 builder.Services.Configure<ProdustsDatabaseSettings>(builder.Configuration.GetSection("ProdustsDatabase"));
 
 builder.Services.AddSingleton<UsersService>();
+builder.Services.AddSingleton<ShopService>();
 
 builder.Services.AddControllers();
 
@@ -23,3 +24,33 @@ app.MapGet("/exit/", () => Environment.Exit(0));
 app.MapControllers();
 
 app.Run();
+
+/*
+shop1{  
+                  name: "KFC"
+                  imageUrl: "(ссылка на картинку в инете, или на базе данных как тебе удобней)",
+                  types: ["American", "Burgers" и т.д], // тип рестика
+                  deliveryCost: 35 // стоимость доставки
+                  deliveryTime: [35, 40] // время доставки
+                   }
+shop2{  
+                  name: " Sushi"
+                  imageUrl: "(ссылка на картинку в инете, или на базе данных как тебе удобней)",
+                  types: ["Sushi", "Japanese" и т.д], // тип рестика
+                  deliveryCost: 35 // стоимость доставки
+                  deliveryTime: [35, 40] // время доставки
+                   }
+
+
+restorantProudct{
+                                   burgers: [
+                                                      {name: "Name",
+                                                        price: "150"},
+                                                       {name: "Name2"
+                                                         price: "150"}....]
+                                    pizzas: [ {name: "Pizza",
+                                                     price: "1337"},
+                                                      {name: "Pizza",
+                                                     price: "1337"}, .]
+}
+*/

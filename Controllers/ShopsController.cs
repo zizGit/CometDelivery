@@ -6,32 +6,32 @@ namespace CometFoodDelivery.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    public class ShopsController : ControllerBase
     {
-        private readonly UsersService _service;
+        private readonly ShopService _service;
 
-        public UsersController(UsersService service)
+        public ShopsController(ShopService service)
         {
             _service = service;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<User>>> Get()
+        public async Task<ActionResult<List<Shop>>> Get()
         {
             return await _service.GetAsync();
         }
 
-        [HttpGet("{id:length(24)}", Name = "GetUserById")]
-        public async Task<ActionResult<User>> Get(string id)
+        [HttpGet("{id:length(24)}", Name = "GetShopById")]
+        public async Task<ActionResult<Shop>> Get(string id)
         {
             try
             {
-                var user = await _service.GetAsync(id);
-                if (user == null)
+                var shop = await _service.GetAsync(id);
+                if (shop == null)
                 {
                     return NotFound();
                 }
-                return user;
+                return shop;
             }
             catch (Exception ex)
             {
@@ -40,36 +40,34 @@ namespace CometFoodDelivery.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> Post(User newUser)
+        public async Task<ActionResult<Shop>> Post(Shop newShop)
         {
             try
             {
-                await _service.CreateAsync(newUser);
-                return CreatedAtRoute("GetUserById", new { id = newUser.Id }, newUser);
+                await _service.CreateAsync(newShop);
+                return CreatedAtRoute("GetShopById", new { id = newShop.Id }, newShop);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
-            } 
+            }
         }
 
         [HttpPut("{id:length(24)}")]
-        public async Task<IActionResult> Update(string id, User updatedUser)
+        public async Task<IActionResult> Update(string id, Shop updatedShop)
         {
             try
             {
-                var user = await _service.GetAsync(id);
-                if (user == null)
+                var shop = await _service.GetAsync(id);
+                if (shop == null)
                 {
                     return NotFound();
                 }
 
-                updatedUser.Id = user.Id;
-                await _service.UpdateAsync(id, updatedUser);
+                updatedShop.Id = shop.Id;
+                await _service.UpdateAsync(id, updatedShop);
 
                 return Ok($"StatusCode {Response.StatusCode}");
-                //return NoContent();
-                //return CreatedAtRoute("GetById", new { id = updatedUser.Id }, updatedUser);
             }
             catch (Exception ex)
             {
@@ -82,15 +80,14 @@ namespace CometFoodDelivery.Controllers
         {
             try
             {
-                var user = await _service.GetAsync(id);
-                if (user == null)
+                var shop = await _service.GetAsync(id);
+                if (shop == null)
                 {
                     return NotFound();
                 }
 
                 await _service.DeleteAsync(id);
                 return Ok($"StatusCode {Response.StatusCode}");
-                //return NoContent();
             }
             catch (Exception ex)
             {
