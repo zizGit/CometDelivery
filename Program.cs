@@ -21,3 +21,18 @@ app.MapGet("/", () => "Hello World!");
 app.MapControllers();
 
 app.Run();
+
+string command;
+while (1) 
+{
+    global::System.Console.WriteLine("Write \"KillServer\" to close program.");
+    global::System.Console.Write(">>> ");
+    global::System.Console.ReadLine(command);
+
+    if (command == "KillServer")
+    {
+        Application.Exit();
+    }
+
+    global::System.Console.WriteLine("");
+}
