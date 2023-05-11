@@ -18,7 +18,7 @@ builder.Services.AddSingleton<ShopService>();
 
 builder.Services.AddControllers();
 
-builder.Services.AddCors(); // äîáàâëÿåì ñåðâèñû CORS
+builder.Services.AddCors(); // Ã¤Ã®Ã¡Ã Ã¢Ã«Ã¿Ã¥Ã¬ Ã±Ã¥Ã°Ã¢Ã¨Ã±Ã» CORS
 
 //jwt token
 builder.Services.AddAuthorization();
@@ -27,26 +27,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            // óêàçûâàåò, áóäåò ëè âàëèäèðîâàòüñÿ èçäàòåëü ïðè âàëèäàöèè òîêåíà
+            // Ã³ÃªÃ Ã§Ã»Ã¢Ã Ã¥Ã², Ã¡Ã³Ã¤Ã¥Ã² Ã«Ã¨ Ã¢Ã Ã«Ã¨Ã¤Ã¨Ã°Ã®Ã¢Ã Ã²Ã¼Ã±Ã¿ Ã¨Ã§Ã¤Ã Ã²Ã¥Ã«Ã¼ Ã¯Ã°Ã¨ Ã¢Ã Ã«Ã¨Ã¤Ã Ã¶Ã¨Ã¨ Ã²Ã®ÃªÃ¥Ã­Ã 
             ValidateIssuer = true,
-            // ñòðîêà, ïðåäñòàâëÿþùàÿ èçäàòåëÿ
+            // Ã±Ã²Ã°Ã®ÃªÃ , Ã¯Ã°Ã¥Ã¤Ã±Ã²Ã Ã¢Ã«Ã¿Ã¾Ã¹Ã Ã¿ Ã¨Ã§Ã¤Ã Ã²Ã¥Ã«Ã¿
             ValidIssuer = AuthOptions.ISSUER,
-            // áóäåò ëè âàëèäèðîâàòüñÿ ïîòðåáèòåëü òîêåíà
+            // Ã¡Ã³Ã¤Ã¥Ã² Ã«Ã¨ Ã¢Ã Ã«Ã¨Ã¤Ã¨Ã°Ã®Ã¢Ã Ã²Ã¼Ã±Ã¿ Ã¯Ã®Ã²Ã°Ã¥Ã¡Ã¨Ã²Ã¥Ã«Ã¼ Ã²Ã®ÃªÃ¥Ã­Ã 
             ValidateAudience = true,
-            // óñòàíîâêà ïîòðåáèòåëÿ òîêåíà
+            // Ã³Ã±Ã²Ã Ã­Ã®Ã¢ÃªÃ  Ã¯Ã®Ã²Ã°Ã¥Ã¡Ã¨Ã²Ã¥Ã«Ã¿ Ã²Ã®ÃªÃ¥Ã­Ã 
             ValidAudience = AuthOptions.AUDIENCE,
-            // áóäåò ëè âàëèäèðîâàòüñÿ âðåìÿ ñóùåñòâîâàíèÿ
+            // Ã¡Ã³Ã¤Ã¥Ã² Ã«Ã¨ Ã¢Ã Ã«Ã¨Ã¤Ã¨Ã°Ã®Ã¢Ã Ã²Ã¼Ã±Ã¿ Ã¢Ã°Ã¥Ã¬Ã¿ Ã±Ã³Ã¹Ã¥Ã±Ã²Ã¢Ã®Ã¢Ã Ã­Ã¨Ã¿
             ValidateLifetime = true,
-            // óñòàíîâêà êëþ÷à áåçîïàñíîñòè
+            // Ã³Ã±Ã²Ã Ã­Ã®Ã¢ÃªÃ  ÃªÃ«Ã¾Ã·Ã  Ã¡Ã¥Ã§Ã®Ã¯Ã Ã±Ã­Ã®Ã±Ã²Ã¨
             IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-            // âàëèäàöèÿ êëþ÷à áåçîïàñíîñòè
+            // Ã¢Ã Ã«Ã¨Ã¤Ã Ã¶Ã¨Ã¿ ÃªÃ«Ã¾Ã·Ã  Ã¡Ã¥Ã§Ã®Ã¯Ã Ã±Ã­Ã®Ã±Ã²Ã¨
             ValidateIssuerSigningKey = true,
         };
     });
 
 var app = builder.Build();
 
-app.UseCors(builder => builder.AllowAnyOrigin()); // íàñòðàèâàåì CORS
+app.UseCors(builder => builder.AllowAnyOrigin()); // Ã­Ã Ã±Ã²Ã°Ã Ã¨Ã¢Ã Ã¥Ã¬ CORS
+app.UseCors(builder => builder.AllowAnyHeader());
+app.UseCors(builder => builder.AllowAnyMethod());
 
 //jwt token
 app.UseAuthentication();
@@ -61,9 +63,9 @@ app.Run();
 
 public class AuthOptions
 {
-    public const string ISSUER = "BackendServer"; // èçäàòåëü òîêåíà
-    public const string AUDIENCE = "Client"; // ïîòðåáèòåëü òîêåíà
-    const string KEY = "secretTokenKey!123";   // êëþ÷ äëÿ øèôðàöèè
+    public const string ISSUER = "BackendServer"; // Ã¨Ã§Ã¤Ã Ã²Ã¥Ã«Ã¼ Ã²Ã®ÃªÃ¥Ã­Ã 
+    public const string AUDIENCE = "Client"; // Ã¯Ã®Ã²Ã°Ã¥Ã¡Ã¨Ã²Ã¥Ã«Ã¼ Ã²Ã®ÃªÃ¥Ã­Ã 
+    const string KEY = "secretTokenKey!123";   // ÃªÃ«Ã¾Ã· Ã¤Ã«Ã¿ Ã¸Ã¨Ã´Ã°Ã Ã¶Ã¨Ã¨
     public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
         new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
 }
