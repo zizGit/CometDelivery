@@ -1,5 +1,6 @@
 using CometFoodDelivery.Models;
 using CometFoodDelivery.Services;
+using System.Runtime.InteropServices;
 
 //const string connectionUri = "mongodb+srv://user:user@cometdb.7ffayor.mongodb.net/?retryWrites=true&w=majority";
 
@@ -16,23 +17,9 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => "Hello World!\nTo close this program, follow this link: .../exit");
+app.MapGet("/exit/", () => Environment.Exit(0));
 
 app.MapControllers();
 
 app.Run();
-
-string command;
-while (1) 
-{
-    global::System.Console.WriteLine("Write \"KillServer\" to close program.");
-    global::System.Console.Write(">>> ");
-    global::System.Console.ReadLine(command);
-
-    if (command == "KillServer")
-    {
-        Application.Exit();
-    }
-
-    global::System.Console.WriteLine("");
-}
