@@ -25,6 +25,7 @@ export default function RestorantPage() {
           <p>Sections</p>
           <Categories
             styles={styles}
+            isSection={true}
             categories={[
               "Buckets",
               "Juicy chicken",

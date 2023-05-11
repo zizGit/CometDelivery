@@ -26,7 +26,7 @@ export default function ShoppingCart() {
         ))}
       </div>
       <div className={styles.cart__bottom}>
-        <Link to="/order">Order delivery{totalPrice}</Link>
+        <Link to="/order">Order delivery{totalPrice}₴</Link>
       </div>
     </div>
   );

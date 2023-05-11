@@ -11,9 +11,11 @@ export default function Header() {
   return (
     <div className={styles.header}>
       {isVisiblePopUp && <RegistrationForm setVisiblePopUp={setVisiblePopUp} />}
-      <Link to="/">
+      <a to="/">
+        {" "}
+        {/*Не забыть убарть */}
         <img className={styles.logo} src={Logo} alt="" />
-      </Link>
+      </a>
       <Search />
       <button onClick={() => setVisiblePopUp(true)}>
         Get Started

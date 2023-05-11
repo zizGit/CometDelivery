@@ -7,16 +7,9 @@ import Establishment from "./Pages/Establishment";
 import RestorantPage from "./Pages/RestorantPage";
 import OrderPage from "./Pages/OrderPage/OrderPage";
 import { Routes, Route } from "react-router-dom";
-
-import axios from "axios";
+import Admin from "./Pages/Admin";
 
 function App() {
-  axios
-    .get("https://fortnite-api.com/v1/map")
-    .then((response) => console.log(response.status))
-    .catch((error) => {
-      console.error(error);
-    });
   return (
     <div>
       <Header />
@@ -24,8 +17,9 @@ function App() {
         <Route path="/" element={<MainPage />} />
         <Route path="/partner" element={<PartnerPage />} />
         <Route path="/establishment" element={<Establishment />} />
-        <Route path="/establishment/$id" element={<RestorantPage />} />
+        <Route path="/establishment/restorant" element={<RestorantPage />} />
         <Route path="/order" element={<OrderPage />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
       <Footer />
     </div>

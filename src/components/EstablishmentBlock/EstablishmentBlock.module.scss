@@ -14,10 +14,12 @@
     color: #2c3d78;
     letter-spacing: 0.2px;
   }
+
   .categories {
     display: flex;
     flex-direction: column;
     width: 158px;
+
     p {
       font-family: "Inter";
       font-style: normal;
@@ -45,6 +47,10 @@
         letter-spacing: 0.2px;
         cursor: pointer;
         color: #2c3d78;
+
+        &.active {
+          background-color: #636e7e28;
+        }
       }
     }
   }
