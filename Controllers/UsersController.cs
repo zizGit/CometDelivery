@@ -99,7 +99,7 @@ namespace CometFoodDelivery.Controllers
                     List<string> responce = new List<string>();
                     responce.Add(Response.StatusCode.ToString());
                     responce.Add(new JwtSecurityTokenHandler().WriteToken(jwt));
-
+                    
                     return responce;
                 }
                 else 
