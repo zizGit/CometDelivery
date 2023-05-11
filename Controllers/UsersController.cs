@@ -1,6 +1,9 @@
 ﻿using CometFoodDelivery.Models;
 using CometFoodDelivery.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace CometFoodDelivery.Controllers
 {
@@ -72,7 +75,7 @@ namespace CometFoodDelivery.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<UserLogin>> Login(UserLogin loginData)
+        public async Task<ActionResult<List<string>>> Login(UserLogin loginData)
         {
             try
             {
@@ -84,7 +87,20 @@ namespace CometFoodDelivery.Controllers
 
                 if (user.Email == loginData.Email && user.Pass == loginData.Pass) 
                 {
-                    return Ok(Response.StatusCode);
+                    var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Name) };
+                    // создаем JWT-токен
+                    var jwt = new JwtSecurityToken(
+                            issuer: AuthOptions.ISSUER,
+                            audience: AuthOptions.AUDIENCE,
+                            claims: claims,
+                            expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
+                            signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+
+                    List<string> responce = new List<string>();
+                    responce.Add(Response.StatusCode.ToString());
+                    responce.Add(new JwtSecurityTokenHandler().WriteToken(jwt));
+
+                    return responce;
                 }
                 else 
                 {

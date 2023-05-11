@@ -1,5 +1,8 @@
 using CometFoodDelivery.Models;
 using CometFoodDelivery.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 //const string connectionUri = "mongodb+srv://user:user@cometdb.7ffayor.mongodb.net/?retryWrites=true&w=majority";
 
@@ -17,9 +20,37 @@ builder.Services.AddControllers();
 
 builder.Services.AddCors(); // добавляем сервисы CORS
 
+//jwt token
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            // указывает, будет ли валидироваться издатель при валидации токена
+            ValidateIssuer = true,
+            // строка, представляющая издателя
+            ValidIssuer = AuthOptions.ISSUER,
+            // будет ли валидироваться потребитель токена
+            ValidateAudience = true,
+            // установка потребителя токена
+            ValidAudience = AuthOptions.AUDIENCE,
+            // будет ли валидироваться время существования
+            ValidateLifetime = true,
+            // установка ключа безопасности
+            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+            // валидация ключа безопасности
+            ValidateIssuerSigningKey = true,
+        };
+    });
+
 var app = builder.Build();
 
 app.UseCors(builder => builder.AllowAnyOrigin()); // настраиваем CORS
+
+//jwt token
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapGet("/", () => "Hello World!\nTo close this program, follow this link: .../exit");
 app.MapGet("/exit/", () => Environment.Exit(0));
@@ -28,16 +59,11 @@ app.MapControllers();
 
 app.Run();
 
-/*
-restorantProudct{
-                                   burgers: [
-                                                      {name: "Name",
-                                                        price: "150"},
-                                                       {name: "Name2"
-                                                         price: "150"}....]
-                                    pizzas: [ {name: "Pizza",
-                                                     price: "1337"},
-                                                      {name: "Pizza",
-                                                     price: "1337"}, .]
+public class AuthOptions
+{
+    public const string ISSUER = "BackendServer"; // издатель токена
+    public const string AUDIENCE = "Client"; // потребитель токена
+    const string KEY = "secretTokenKey!123";   // ключ для шифрации
+    public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
+        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
 }
-*/
