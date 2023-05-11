@@ -19,22 +19,22 @@ namespace CometFoodDelivery.Services
         {
             return await _collection.Find(x => true).ToListAsync();
         }
-        public async Task<Shop> GetAsync(string id)
+        public async Task<Shop> GetAsync(string name)
         {
-            return await _collection.Find(x => x.Id == id).FirstOrDefaultAsync();
+            return await _collection.Find(x => x.Name == name).FirstOrDefaultAsync();
         }
         public async Task<Shop> CreateAsync(Shop newShop)
         {
             await _collection.InsertOneAsync(newShop);
             return newShop;
         }
-        public async Task UpdateAsync(string id, Shop updatedShop)
+        public async Task UpdateAsync(string name, Shop updatedShop)
         {
-            await _collection.ReplaceOneAsync(x => x.Id == id, updatedShop);
+            await _collection.ReplaceOneAsync(x => x.Name == name, updatedShop);
         }
-        public async Task DeleteAsync(string id)
+        public async Task DeleteAsync(string name)
         {
-            await _collection.DeleteOneAsync(x => x.Id == id);
+            await _collection.DeleteOneAsync(x => x.Name == name);
         }
     }
 }

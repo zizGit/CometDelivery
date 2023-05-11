@@ -14,15 +14,15 @@ namespace CometFoodDelivery.Models
         public string Name { get; set; }
 
         [BsonElement("imageUrl")]
-        public int Url { get; set; }
+        public string imageUrl { get; set; }
 
         [BsonElement("types")]
-        public string type { get; set; }
+        public List<string> types { get; set; }
 
         [BsonElement("deliveryCost")]
-        public string Cost { get; set; }
+        public double deliveryCost { get; set; }
 
         [BsonElement("deliveryTime")]
-        public string Time { get; set; }
+        public List<int> deliveryTime { get; set; }
     }
 }

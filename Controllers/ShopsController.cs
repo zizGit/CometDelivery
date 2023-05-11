@@ -21,12 +21,12 @@ namespace CometFoodDelivery.Controllers
             return await _service.GetAsync();
         }
 
-        [HttpGet("{id:length(24)}", Name = "GetShopById")]
-        public async Task<ActionResult<Shop>> Get(string id)
+        [HttpGet("{name}", Name = "GetShopByName")]
+        public async Task<ActionResult<Shop>> Get(string name)
         {
             try
             {
-                var shop = await _service.GetAsync(id);
+                var shop = await _service.GetAsync(name);
                 if (shop == null)
                 {
                     return NotFound();
@@ -45,7 +45,7 @@ namespace CometFoodDelivery.Controllers
             try
             {
                 await _service.CreateAsync(newShop);
-                return CreatedAtRoute("GetShopById", new { id = newShop.Id }, newShop);
+                return CreatedAtRoute("GetShopByName", new { name = newShop.Name }, newShop);
             }
             catch (Exception ex)
             {
@@ -53,19 +53,19 @@ namespace CometFoodDelivery.Controllers
             }
         }
 
-        [HttpPut("{id:length(24)}")]
-        public async Task<IActionResult> Update(string id, Shop updatedShop)
+        [HttpPut("{name}")]
+        public async Task<IActionResult> Update(string name, Shop updatedShop)
         {
             try
             {
-                var shop = await _service.GetAsync(id);
+                var shop = await _service.GetAsync(name);
                 if (shop == null)
                 {
                     return NotFound();
                 }
 
-                updatedShop.Id = shop.Id;
-                await _service.UpdateAsync(id, updatedShop);
+                updatedShop.Name = shop.Name;
+                await _service.UpdateAsync(name, updatedShop);
 
                 return Ok($"StatusCode {Response.StatusCode}");
             }
@@ -75,18 +75,18 @@ namespace CometFoodDelivery.Controllers
             }
         }
 
-        [HttpDelete("{id:length(24)}")]
-        public async Task<IActionResult> Delete(string id)
+        [HttpDelete("{name}")]
+        public async Task<IActionResult> Delete(string name)
         {
             try
             {
-                var shop = await _service.GetAsync(id);
+                var shop = await _service.GetAsync(name);
                 if (shop == null)
                 {
                     return NotFound();
                 }
 
-                await _service.DeleteAsync(id);
+                await _service.DeleteAsync(name);
                 return Ok($"StatusCode {Response.StatusCode}");
             }
             catch (Exception ex)

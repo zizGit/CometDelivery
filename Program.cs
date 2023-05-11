@@ -16,7 +16,11 @@ builder.Services.AddSingleton<ShopService>();
 
 builder.Services.AddControllers();
 
+builder.Services.AddCors(); // добавляем сервисы CORS
+
 var app = builder.Build();
+
+app.UseCors(builder => builder.AllowAnyOrigin()); // настраиваем CORS
 
 app.MapGet("/", () => "Hello World!\nTo close this program, follow this link: .../exit");
 app.MapGet("/exit/", () => Environment.Exit(0));
@@ -26,22 +30,6 @@ app.MapControllers();
 app.Run();
 
 /*
-shop1{  
-                  name: "KFC"
-                  imageUrl: "(ссылка на картинку в инете, или на базе данных как тебе удобней)",
-                  types: ["American", "Burgers" и т.д], // тип рестика
-                  deliveryCost: 35 // стоимость доставки
-                  deliveryTime: [35, 40] // время доставки
-                   }
-shop2{  
-                  name: " Sushi"
-                  imageUrl: "(ссылка на картинку в инете, или на базе данных как тебе удобней)",
-                  types: ["Sushi", "Japanese" и т.д], // тип рестика
-                  deliveryCost: 35 // стоимость доставки
-                  deliveryTime: [35, 40] // время доставки
-                   }
-
-
 restorantProudct{
                                    burgers: [
                                                       {name: "Name",
