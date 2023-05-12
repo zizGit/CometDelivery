@@ -81,7 +81,8 @@ namespace CometFoodDelivery.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<List<string>>> Login(UserLogin loginData)
+        //public async Task<ActionResult<List<string>>> Login(UserLogin loginData)
+        public async Task<ActionResult<string>> Login(UserLogin loginData)
         {
             try
             {
@@ -102,11 +103,11 @@ namespace CometFoodDelivery.Controllers
                             expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
                             signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
 
-                    List<string> responce = new List<string>();
-                    responce.Add(Response.StatusCode.ToString());
-                    responce.Add(new JwtSecurityTokenHandler().WriteToken(jwt));
+                    //List<string> responce = new List<string>();
+                    //responce.Add(Response.StatusCode.ToString());
+                    //responce.Add(new JwtSecurityTokenHandler().WriteToken(jwt));
                     
-                    return responce;
+                    return new JwtSecurityTokenHandler().WriteToken(jwt);
                 }
                 else 
                 {

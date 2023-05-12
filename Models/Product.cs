@@ -9,6 +9,9 @@ namespace CometFoodDelivery.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
 
+        [BsonElement("shopName")]
+        public string Shop { get; set; }
+
         [BsonElement("type")]
         public string Type { get; set; }
 

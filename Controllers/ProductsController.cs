@@ -39,19 +39,56 @@ namespace CometFoodDelivery.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Product>> Post(Product newProduct)
+        [HttpGet("byShop/{shopName}", Name = "GetProductByShop")]
+        public async Task<ActionResult<Product>> GetByShop(string shop)
         {
             try
             {
-                await _service.CreateAsync(newProduct);
-                return CreatedAtRoute("GetProductByType", new { type = newProduct.Type }, newProduct);
+                var product = await _service.GetByShopAsync(shop);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+                return product;
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost]
+        public async Task<ActionResult<Product>> Post(Product newProduct)
+        {
+            try
+            {
+                var product = await _service.GetByShopAsync(newProduct.Shop);
+                if (product == null)
+                {
+                    await _service.CreateAsync(newProduct);
+                    return CreatedAtRoute("GetProductByShop", new { shop = newProduct.Shop }, newProduct);
+                }
+
+                return BadRequest("this product is already registered in this shop");
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 
         //[HttpPut("{name}")]
         //public async Task<IActionResult> Update(string name, Shop updatedShop)

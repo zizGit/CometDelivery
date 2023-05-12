@@ -23,11 +23,18 @@ namespace CometFoodDelivery.Services
         {
             return await _collection.Find(x => x.Type == type).FirstOrDefaultAsync();
         }
-        public async Task<Product> GetAsync(string type, string name)
+        public async Task<Product> GetByShopAsync(string shop)
         {
-            //Product test = await _collection.Find(x => x.Type == type).FirstOrDefaultAsync();
-            return await _collection.Find(x => x.Type == type).FirstOrDefaultAsync();
+            return await _collection.Find(x => x.Shop == shop).FirstOrDefaultAsync();
         }
+
+
+
+
+
+
+
+
         public async Task<Product> CreateAsync(Product newProduct)
         {
             await _collection.InsertOneAsync(newProduct);
