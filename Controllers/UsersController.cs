@@ -65,8 +65,14 @@ namespace CometFoodDelivery.Controllers
         {
             try
             {
-                await _service.CreateAsync(newUser);
-                return CreatedAtRoute("GetUserById", new { id = newUser.Id }, newUser);
+                var user = await _service.GetEmailAsync(newUser.Email);
+                if (user == null)
+                {
+                    await _service.CreateAsync(newUser);
+                    return CreatedAtRoute("GetUserById", new { id = newUser.Id }, newUser);
+                }
+
+                return BadRequest("this email is already registered");
             }
             catch (Exception ex)
             {
@@ -150,7 +156,6 @@ namespace CometFoodDelivery.Controllers
 
                 await _service.DeleteAsync(id);
                 return Ok(Response.StatusCode);
-                //return NoContent();
             }
             catch (Exception ex)
             {
