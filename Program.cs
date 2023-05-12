@@ -17,8 +17,7 @@ builder.Services.AddSingleton<UsersService>();
 builder.Services.AddSingleton<ShopService>();
 
 builder.Services.AddControllers();
-
-builder.Services.AddCors(); // äîáàâëÿåì ñåðâèñû CORS
+builder.Services.AddCors(); // CORS
 
 //jwt token
 builder.Services.AddAuthorization();
@@ -27,28 +26,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            // óêàçûâàåò, áóäåò ëè âàëèäèðîâàòüñÿ èçäàòåëü ïðè âàëèäàöèè òîêåíà
             ValidateIssuer = true,
-            // ñòðîêà, ïðåäñòàâëÿþùàÿ èçäàòåëÿ
             ValidIssuer = AuthOptions.ISSUER,
-            // áóäåò ëè âàëèäèðîâàòüñÿ ïîòðåáèòåëü òîêåíà
             ValidateAudience = true,
-            // óñòàíîâêà ïîòðåáèòåëÿ òîêåíà
             ValidAudience = AuthOptions.AUDIENCE,
-            // áóäåò ëè âàëèäèðîâàòüñÿ âðåìÿ ñóùåñòâîâàíèÿ
             ValidateLifetime = true,
-            // óñòàíîâêà êëþ÷à áåçîïàñíîñòè
             IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-            // âàëèäàöèÿ êëþ÷à áåçîïàñíîñòè
             ValidateIssuerSigningKey = true,
         };
     });
 
 var app = builder.Build();
 
-app.UseCors(builder => builder.AllowAnyOrigin()); // íàñòðàèâàåì CORS
-app.UseCors(builder => builder.AllowAnyHeader());
-app.UseCors(builder => builder.AllowAnyMethod());
+app.UseCors(builder => builder.AllowAnyOrigin()
+                              .AllowAnyHeader()
+                              .AllowAnyMethod()); // CORS
 
 //jwt token
 app.UseAuthentication();
@@ -63,9 +55,9 @@ app.Run();
 
 public class AuthOptions
 {
-    public const string ISSUER = "BackendServer"; // èçäàòåëü òîêåíà
-    public const string AUDIENCE = "Client"; // ïîòðåáèòåëü òîêåíà
-    const string KEY = "secretTokenKey!123";   // êëþ÷ äëÿ øèôðàöèè
+    public const string ISSUER = "BackendServer";
+    public const string AUDIENCE = "Client";
+    const string KEY = "secretTokenKey!123";
     public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
         new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
 }
