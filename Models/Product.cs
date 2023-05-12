@@ -5,7 +5,6 @@ namespace CometFoodDelivery.Models
 {
     public class Product
     {
-        // ? - значение null допустимо
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }

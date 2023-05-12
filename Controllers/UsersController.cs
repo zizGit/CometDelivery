@@ -88,7 +88,7 @@ namespace CometFoodDelivery.Controllers
                 if (user.Email == loginData.Email && user.Pass == loginData.Pass) 
                 {
                     var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Name) };
-                    // создаем JWT-токен
+                    // create JWT-token
                     var jwt = new JwtSecurityToken(
                             issuer: AuthOptions.ISSUER,
                             audience: AuthOptions.AUDIENCE,
