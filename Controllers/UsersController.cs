@@ -3,6 +3,7 @@ using CometFoodDelivery.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Json.Nodes;
@@ -83,9 +84,8 @@ namespace CometFoodDelivery.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<List<string>>> Login(UserLogin loginData)
-        //public async Task<ActionResult<string>> Login(UserLogin loginData)
-        //public async Task<ActionResult<JsonArray>> Login(UserLogin loginData)
+        //public async Task<ActionResult<List<string>>> Login(UserLogin loginData)
+        public async Task<ActionResult<JsonResult>> Login(UserLogin loginData)
         {
             try
             {
@@ -106,41 +106,14 @@ namespace CometFoodDelivery.Controllers
                             expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
                             signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
 
-                    //JsonArray test = new JsonArray;
-                    //JsonContent content;
-                    //JsonNode nodeStatus, nodeId, nodeLogin, nodeToken;
-                    //JsonObject objectStatus, objectId, objectLogin, objectToken;
+                    loginData data = new loginData();
 
-                    //nodeStatus = Response.StatusCode;
-                    //nodeId = user.Id;
-                    //nodeLogin = user.Email;
-                    //nodeToken = new JwtSecurityTokenHandler().WriteToken(jwt);
+                    data.Status = Response.StatusCode;
+                    data.Id = user.Id;
+                    data.Name = user.Name;
+                    data.Token = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-                    //test.Add(nodeStatus);
-                    //test.Add(nodeId);
-                    //test.Add(nodeLogin);
-                    //test.Add(nodeToken);
-
-                    //return test;
-
-                    string temp;
-                    List<string> responce = new List<string>();
-
-                    temp = $"status: {Response.StatusCode}";
-                    responce.Add(temp);
-
-                    temp = $"id: {user.Id}";
-                    responce.Add(temp);
-
-                    temp = $"login: {user.Email}";
-                    responce.Add(temp);
-
-                    temp = $"token: {new JwtSecurityTokenHandler().WriteToken(jwt)}";
-                    responce.Add(temp);
-
-                    return responce;
-
-                    //return new JwtSecurityTokenHandler().WriteToken(jwt);
+                    return Ok(Response.WriteAsJsonAsync(data));
                 }
                 else 
                 {
@@ -196,5 +169,13 @@ namespace CometFoodDelivery.Controllers
                 return BadRequest(ex.Message);
             }
         }
+    }
+
+    public class loginData 
+    {
+        public int Status { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Token { get; set; }
     }
 }
