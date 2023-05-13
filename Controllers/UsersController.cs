@@ -2,11 +2,8 @@
 using CometFoodDelivery.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using MongoDB.Bson;
-using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text.Json.Nodes;
 
 namespace CometFoodDelivery.Controllers
 {
@@ -84,7 +81,6 @@ namespace CometFoodDelivery.Controllers
         }
 
         [HttpPost("login")]
-        //public async Task<ActionResult<List<string>>> Login(UserLogin loginData)
         public async Task<ActionResult<JsonResult>> Login(UserLogin loginData)
         {
             try

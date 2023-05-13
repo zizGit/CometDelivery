@@ -33,8 +33,9 @@ namespace CometFoodDelivery.Services
 
         public async Task<ProductsNameAndPrice> GetByNameAsync(string shop, string name)
         {
-            var temp = GetByShopAsync(shop);
-            
+            var temp = await _collection.Find(shop).FirstOrDefaultAsync();
+
+            //temp.ProductNameAndPrice
 
             return await _nameAndPriceCollection.Find(x => x.Name == name).FirstOrDefaultAsync();
         }
