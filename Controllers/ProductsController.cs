@@ -39,7 +39,7 @@ namespace CometFoodDelivery.Controllers
             }
         }
 
-        [HttpGet("byShop/{shopName}", Name = "GetProductByShop")]
+        [HttpGet("byshop/{shopName}", Name = "GetProductByShop")]
         public async Task<ActionResult<Product>> GetByShop(string shop)
         {
             try
@@ -112,6 +112,8 @@ namespace CometFoodDelivery.Controllers
         //    }
         //}
 
+
+
         [HttpDelete("{type}")]
         public async Task<IActionResult> Delete(string type)
         {
@@ -132,13 +134,15 @@ namespace CometFoodDelivery.Controllers
             }
         }
 
-        [HttpDelete("{type}/{name}")]
-        public async Task<IActionResult> Delete(string type, string name)
+        [HttpDelete("{shopName}/{name}")]
+        public async Task<IActionResult> Delete(string shop, string name)
         {
             try
             {
-                var product = await _service.GetAsync(name);
-                if (product == null)
+                var productShop = await _service.GetByShopAsync(shop);
+                //var productName = await _service.GetByNameAsync(name);
+
+                if (productShop == null/* || productName == null*/)
                 {
                     return NotFound();
                 }

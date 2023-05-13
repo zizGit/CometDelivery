@@ -2,8 +2,10 @@
 using CometFoodDelivery.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Bson;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text.Json.Nodes;
 
 namespace CometFoodDelivery.Controllers
 {
@@ -81,8 +83,8 @@ namespace CometFoodDelivery.Controllers
         }
 
         [HttpPost("login")]
-        //public async Task<ActionResult<List<string>>> Login(UserLogin loginData)
-        public async Task<ActionResult<string>> Login(UserLogin loginData)
+        public async Task<ActionResult<List<string>>> Login(UserLogin loginData)
+        //public async Task<ActionResult<string>> Login(UserLogin loginData)
         {
             try
             {
@@ -103,11 +105,34 @@ namespace CometFoodDelivery.Controllers
                             expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
                             signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
 
-                    //List<string> responce = new List<string>();
-                    //responce.Add(Response.StatusCode.ToString());
-                    //responce.Add(new JwtSecurityTokenHandler().WriteToken(jwt));
-                    
-                    return new JwtSecurityTokenHandler().WriteToken(jwt);
+                    JsonArray test;
+                    JsonContent content;
+                    JsonNode nodeStatus, nodeId, nodeLogin, nodeToken;
+                    JsonObject objectStatus, objectId, objectLogin, objectToken;
+
+                    nodeStatus = Response.StatusCode;
+                    nodeId = user.Id;
+                    nodeLogin = user.Email;
+                    nodeToken = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+                    string temp;
+                    List<string> responce = new List<string>();
+
+                    temp = $"status: {Response.StatusCode}";
+                    responce.Add(temp);
+
+                    temp = $"id: {user.Id}";
+                    responce.Add(temp);
+
+                    temp = $"login: {user.Email}";
+                    responce.Add(temp);
+
+                    temp = $"token: {new JwtSecurityTokenHandler().WriteToken(jwt)}";
+                    responce.Add(temp);
+
+                    return responce;
+
+                    //return new JwtSecurityTokenHandler().WriteToken(jwt);
                 }
                 else 
                 {

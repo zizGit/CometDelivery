@@ -44,8 +44,14 @@ namespace CometFoodDelivery.Controllers
         {
             try
             {
-                await _service.CreateAsync(newShop);
-                return CreatedAtRoute("GetShopByName", new { name = newShop.Name }, newShop);
+                var shop = await _service.GetAsync(newShop.Name);
+                if (shop == null)
+                {
+                    await _service.CreateAsync(newShop);
+                    return CreatedAtRoute("GetShopByName", new { name = newShop.Name }, newShop);
+                }
+
+                return BadRequest("this shop is already registered");
             }
             catch (Exception ex)
             {

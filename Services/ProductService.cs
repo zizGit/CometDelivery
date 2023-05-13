@@ -7,12 +7,14 @@ namespace CometFoodDelivery.Services
     public class ProductService
     {
         private readonly IMongoCollection<Product> _collection;
+        private readonly IMongoCollection<ProductsNameAndPrice> _nameAndPriceCollection;
 
         public ProductService(IOptions<ProductsDatabaseSettings> databaseSettings, IOptions<DatabaseConnectionStringSettings> connectionSettings)
         {
             var client = new MongoClient(connectionSettings.Value.ConnectionString);
             var database = client.GetDatabase(databaseSettings.Value.DatabaseName);
             _collection = database.GetCollection<Product>(databaseSettings.Value.CollectionName);
+            _nameAndPriceCollection = database.GetCollection<ProductsNameAndPrice>(databaseSettings.Value.CollectionName);
         }
 
         public async Task<List<Product>> GetAsync()
@@ -26,6 +28,15 @@ namespace CometFoodDelivery.Services
         public async Task<Product> GetByShopAsync(string shop)
         {
             return await _collection.Find(x => x.Shop == shop).FirstOrDefaultAsync();
+        }
+
+
+        public async Task<ProductsNameAndPrice> GetByNameAsync(string shop, string name)
+        {
+            var temp = GetByShopAsync(shop);
+            
+
+            return await _nameAndPriceCollection.Find(x => x.Name == name).FirstOrDefaultAsync();
         }
 
 
