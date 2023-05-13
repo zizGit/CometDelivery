@@ -85,6 +85,7 @@ namespace CometFoodDelivery.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<List<string>>> Login(UserLogin loginData)
         //public async Task<ActionResult<string>> Login(UserLogin loginData)
+        //public async Task<ActionResult<JsonArray>> Login(UserLogin loginData)
         {
             try
             {
@@ -105,15 +106,22 @@ namespace CometFoodDelivery.Controllers
                             expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
                             signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
 
-                    JsonArray test;
-                    JsonContent content;
-                    JsonNode nodeStatus, nodeId, nodeLogin, nodeToken;
-                    JsonObject objectStatus, objectId, objectLogin, objectToken;
+                    //JsonArray test = new JsonArray;
+                    //JsonContent content;
+                    //JsonNode nodeStatus, nodeId, nodeLogin, nodeToken;
+                    //JsonObject objectStatus, objectId, objectLogin, objectToken;
 
-                    nodeStatus = Response.StatusCode;
-                    nodeId = user.Id;
-                    nodeLogin = user.Email;
-                    nodeToken = new JwtSecurityTokenHandler().WriteToken(jwt);
+                    //nodeStatus = Response.StatusCode;
+                    //nodeId = user.Id;
+                    //nodeLogin = user.Email;
+                    //nodeToken = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+                    //test.Add(nodeStatus);
+                    //test.Add(nodeId);
+                    //test.Add(nodeLogin);
+                    //test.Add(nodeToken);
+
+                    //return test;
 
                     string temp;
                     List<string> responce = new List<string>();
