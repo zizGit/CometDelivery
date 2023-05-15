@@ -55,7 +55,7 @@
     /* fav drop */
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     // box-shadow: 0px 0px 30px rgba(44, 61, 120, 0.15);
     border-radius: 0px 0px 15px 15px;
     height: 13%;
@@ -74,6 +74,20 @@
       padding: 8px 16px;
       background: #2c3d78;
       border-radius: 12px;
+      &.unactive {
+        pointer-events: none;
+        opacity: 0.5;
+      }
+    }
+    p {
+      font-family: "Inter";
+      font-style: normal;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 22px;
+      letter-spacing: 0.2px;
+
+      color: #2c3d78;
     }
   }
 }

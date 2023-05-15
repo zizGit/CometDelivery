@@ -16,6 +16,7 @@
       font-weight: 800;
       font-size: 26px;
       line-height: 20px;
+      text-transform: uppercase;
     }
   }
   &__logo {
@@ -30,6 +31,7 @@
       text-align: center;
       height: 98%;
       width: 100%;
+      text-transform: uppercase;
 
       display: flex;
       justify-content: center;
@@ -74,6 +76,9 @@
     }
 
     ul {
+      a {
+        text-decoration: none;
+      }
       li {
         text-decoration: none;
         border-bottom: 1px solid #d6d6d6;
@@ -101,7 +106,7 @@
   &__products {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(1fr);
+    // grid-template-rows: repeat(1fr);
     grid-column-gap: 20px;
     grid-row-gap: 20px;
   }

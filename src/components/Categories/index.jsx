@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setCategory, setSection } from "../../redux/slices/categorySlice";
+import { Link } from "react-router-dom";
 
 function Categories({
   styles,
-  isSection,
+
   categories = [
     "Fast Food",
     "Pizza",
@@ -18,24 +19,19 @@ function Categories({
 }) {
   const dispatch = useDispatch();
   const { category } = useSelector((state) => state.categorySlice);
-  const { section } = useSelector((state) => state.categorySlice);
+
   return (
     <div className={styles.categories}>
       <ul>
         {categories.map((item, id) => (
-          <li
-            key={id}
-            onClick={
-              isSection
-                ? () => dispatch(setSection({ name: item, id: id }))
-                : () => dispatch(setCategory({ name: item, id: id }))
-            }
-            className={
-              (item === section.name || item === category.name) && styles.active
-            }
-          >
-            {item}
-          </li>
+          <Link key={id} to="/establishment">
+            <li
+              onClick={() => dispatch(setCategory({ name: item, id: id }))}
+              className={item === category.name ? styles.active : ""}
+            >
+              {item}
+            </li>
+          </Link>
         ))}
       </ul>
     </div>

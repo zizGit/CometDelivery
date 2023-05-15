@@ -20,12 +20,9 @@ const cartSlice = createSlice({
       if (checked) {
         state.cart = [...state.cart, { ...action.payload, count: 1 }];
       }
-
-      console.log(state.cart);
     },
     removeFromCart(state, action) {
       state.cart = state.cart.filter((obj) => obj.name !== action.payload.name);
-      console.log(state.cart);
     },
     decreaseFromCart(state, action) {
       state.cart = state.cart.map((obj, index) => {

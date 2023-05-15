@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Registation.module.scss";
+import { redirect } from "react-router-dom";
+import { authUser } from "../../api/axios/core";
 
 export default function Login({ setLoginForm }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    authUser(password, email);
+  };
+
   return (
     <>
       <h2>Log in to Comet</h2>
@@ -15,14 +25,26 @@ export default function Login({ setLoginForm }) {
         <p>or continue with email</p>
         <hr />
       </div>
-      <form action="#" className={styles.form}>
+      <form onSubmit={handleSubmit} className={styles.form}>
         <label htmlFor="email">
           Email
-          <input type="email" placeholder="Email" id="email" />
+          <input
+            type="text"
+            placeholder="Email"
+            id="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
         </label>
-        <label htmlFor="password">
+        <label htmlFor="pass">
           Password
-          <input type="password" placeholder="Password" id="password" />
+          <input
+            type="text"
+            placeholder="Password"
+            id="pass"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
         </label>
         <button className={styles.submit}>Log in with email</button>
       </form>

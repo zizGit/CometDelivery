@@ -4,9 +4,9 @@ import CartItem from "./CartItem";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-export default function ShoppingCart() {
+export default function ShoppingCart({ isOrder }) {
   const { cart } = useSelector((state) => state.cart);
-  console.log(cart);
+
   const totalPrice = cart.reduce(function (sum, elem) {
     return sum + elem.price * elem.count;
   }, 0);
@@ -26,7 +26,16 @@ export default function ShoppingCart() {
         ))}
       </div>
       <div className={styles.cart__bottom}>
-        <Link to="/order">Order delivery{totalPrice}₴</Link>
+        {isOrder ? (
+          <>
+            <p>Оrder price</p>
+            <p>{totalPrice} ₴</p>
+          </>
+        ) : (
+          <Link className={cart.length > 0 ? "" : styles.unactive} to="/order">
+            Order delivery
+          </Link>
+        )}
       </div>
     </div>
   );

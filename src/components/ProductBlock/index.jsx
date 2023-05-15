@@ -6,9 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/slices/cartSlice";
 
 export default function ProductBlock({ name, price }) {
-  // const { cart } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-  console.log(name);
+
   return (
     <div className={styles.productblock}>
       <div className={styles.productblock__top}>

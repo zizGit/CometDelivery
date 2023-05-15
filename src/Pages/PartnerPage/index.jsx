@@ -2,8 +2,11 @@ import React from "react";
 import styles from "./PartnervBlock.module.scss";
 // import BackGround from "../../assets/Partner/BackGround.svg";
 import PartnerPhoto from "../../assets/Partner/PartnerPhoto.png";
-
-export default function PartnerBlock() {
+import { useEffect } from "react";
+export default function PartnerPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className={styles.wrapper}>
       <h2 className={styles.start}>

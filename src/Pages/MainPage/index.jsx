@@ -1,13 +1,13 @@
 import React from "react";
 import styles from "./MainPageBlock.module.scss";
-import Categories from "../Categories";
+import Categories from "../../components/Categories";
 import Delivery from "../../assets/MainPage/Delivery.gif";
 import Content1 from "../../assets/MainPage/Content/Content1.svg";
 import Content2 from "../../assets/MainPage/Content/Content2.svg";
 import Content3 from "../../assets/MainPage/Content/Content3.svg";
 import Chief from "../../assets/MainPage/BecomePartner/Chief.png";
 import { Link } from "react-router-dom";
-export default function MainPageBlock() {
+export default function MainPage() {
   return (
     <main className={styles.main}>
       <h2>Choose from popular categories</h2>

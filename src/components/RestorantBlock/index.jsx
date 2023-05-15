@@ -2,19 +2,27 @@ import React from "react";
 import styles from "./Restorant.module.scss";
 import RestorantImg from "../../assets/Establishment/image 13.png";
 import { Link } from "react-router-dom";
-
-export default function RestorantBlock() {
+import { Navigate } from "react-router-dom";
+export default function RestorantBlock({
+  name,
+  imageUrl,
+  types,
+  deliveryCost,
+  deliveryTime,
+}) {
+  imageUrl =
+    "https://img1.akspic.ru/previews/1/4/5/2/7/172541/172541-zemlya-luna-planeta-noch-atmosfera-500x.jpg";
   return (
     <div className={styles.container}>
       <div className={styles.container__top}>
-        <Link to="/establishment/restorant">
-          <img src={RestorantImg} alt="" />
+        <Link to={`/establishment/${name}`}>
+          <img src={imageUrl} alt="" />
           <div className={styles.container__about}>
-            <h3>Name</h3>
+            <h3>{name}</h3>
             <div className={styles.container__categories}>
-              <p>American</p>
-              <p>Pizza</p>
-              <p>Sushi</p>
+              {types.map((element, index) => (
+                <p key={index}>{element}</p>
+              ))}
             </div>
           </div>
         </Link>
@@ -65,9 +73,11 @@ export default function RestorantBlock() {
               fill="#040B20"
             />
           </svg>
-          39.00 ₴
+          {deliveryCost} ₴
         </div>
-        <p>20-30 min</p>
+        <p>
+          {deliveryTime[0]}-{deliveryTime[1]} min
+        </p>
       </div>
     </div>
   );
