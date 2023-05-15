@@ -50,4 +50,9 @@ namespace CometFoodDelivery.Models
         public string Pass { get; set; } = null!;
         public string Phone { get; set; } = null!;
     }
+
+    public class jwt 
+    {
+        public string Token { get; set; } = null!;
+    }
 }

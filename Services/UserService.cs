@@ -1,6 +1,13 @@
-﻿using CometFoodDelivery.Models;
+﻿using Amazon.Runtime.Credentials.Internal;
+using CometFoodDelivery.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Principal;
 
 namespace CometFoodDelivery.Services
 {
@@ -13,6 +20,57 @@ namespace CometFoodDelivery.Services
             var client = new MongoClient(connectionSettings.Value.ConnectionString);
             var database = client.GetDatabase(databaseSettings.Value.DatabaseName);
             _collection = database.GetCollection<User>(databaseSettings.Value.CollectionName);
+        }
+
+        public string TokenCreate(User user) 
+        {
+            var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Email) };
+
+            // create JWT-token
+            var jwt = new JwtSecurityToken(
+                    issuer: AuthOptions.ISSUER,
+                    audience: AuthOptions.AUDIENCE,
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddDays(1),
+                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+
+            return new JwtSecurityTokenHandler().WriteToken(jwt);
+        }
+
+        public bool ValidateToken(string authToken)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var validationOptions = new TokenValidationParameters();
+
+            if (authToken != null & tokenHandler.CanReadToken(authToken) & authToken?.Length == 348)
+            {
+                var jwtSecurityToken = tokenHandler.ReadJwtToken(authToken);
+                SecurityToken validatedToken;
+                IPrincipal principal = tokenHandler.ValidateToken(authToken, validationOptions, out validatedToken);
+
+                if (principal?.Identity?.Name != null)
+                {
+                    return true; // Token is valid
+                }
+
+                else
+                {
+                    return false; // Token is expired
+                }
+            }
+            return false; // Token is damaged
+
+
+
+            //var tokenHandler = new JwtSecurityTokenHandler();
+            //var validationParameters = GetValidationParameters();
+
+            //var options = new TokenValidationParameters();
+
+            //SecurityToken validatedToken;
+            //IPrincipal principal = tokenHandler.ValidateToken(authToken, validationParameters, out validatedToken);
+            //return true;
         }
 
         public async Task<List<User>> GetAsync()

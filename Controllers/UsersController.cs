@@ -120,21 +120,12 @@ namespace CometFoodDelivery.Controllers
 
                 if (user.Email == loginData.Email && user.Pass == loginData.Pass) 
                 {
-                    var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Name) };
-                    // create JWT-token
-                    var jwt = new JwtSecurityToken(
-                            issuer: AuthOptions.ISSUER,
-                            audience: AuthOptions.AUDIENCE,
-                            claims: claims,
-                            expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
-                            signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-
                     loginData data = new loginData();
 
                     data.Status = Response.StatusCode;
                     data.Id = user.Id;
                     data.Name = user.Name;
-                    data.Token = new JwtSecurityTokenHandler().WriteToken(jwt);
+                    data.Token = _service.TokenCreate(user);
 
                     return Ok(Response.WriteAsJsonAsync(data));
                 }
@@ -142,6 +133,23 @@ namespace CometFoodDelivery.Controllers
                 {
                     return BadRequest();
                 }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("login/test")]
+        public ActionResult Test(jwt token)
+        {
+            try
+            {
+                if (_service.ValidateToken(token.Token)) 
+                {
+                    return Ok(true);
+                }
+                else { return Unauthorized(); }
             }
             catch (Exception ex)
             {
