@@ -1,13 +1,10 @@
-﻿using Amazon.Runtime.Credentials.Internal;
-using CometFoodDelivery.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using CometFoodDelivery.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Principal;
+using System.Text;
 
 namespace CometFoodDelivery.Services
 {
@@ -22,64 +19,60 @@ namespace CometFoodDelivery.Services
             _collection = database.GetCollection<User>(databaseSettings.Value.CollectionName);
         }
 
-        public string TokenCreate(User user) 
+        public string TokenCreate(string email) 
         {
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Email) };
-
-            // create JWT-token
-            var jwt = new JwtSecurityToken(
-                    issuer: AuthOptions.ISSUER,
-                    audience: AuthOptions.AUDIENCE,
-                    claims: claims,
-                    expires: DateTime.UtcNow.AddDays(1),
-                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-
-            return new JwtSecurityTokenHandler().WriteToken(jwt);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("email", email) }),
+                Expires = DateTime.UtcNow.AddDays(1),
+                //Expires = DateTime.UtcNow.AddSeconds(30), //for test
+                SigningCredentials = new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
-
         public bool ValidateToken(string authToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-
-            var validationOptions = new TokenValidationParameters();
-
-            if (authToken != null & tokenHandler.CanReadToken(authToken) & authToken?.Length == 348)
+            try
             {
-                var jwtSecurityToken = tokenHandler.ReadJwtToken(authToken);
-                SecurityToken validatedToken;
-                IPrincipal principal = tokenHandler.ValidateToken(authToken, validationOptions, out validatedToken);
-
-                if (principal?.Identity?.Name != null)
+                tokenHandler.ValidateToken(authToken, new TokenValidationParameters
                 {
-                    return true; // Token is valid
-                }
-
-                else
-                {
-                    return false; // Token is expired
-                }
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                }, out SecurityToken validatedToken);
             }
-            return false; // Token is damaged
-
-
-
-            //var tokenHandler = new JwtSecurityTokenHandler();
-            //var validationParameters = GetValidationParameters();
-
-            //var options = new TokenValidationParameters();
-
-            //SecurityToken validatedToken;
-            //IPrincipal principal = tokenHandler.ValidateToken(authToken, validationParameters, out validatedToken);
-            //return true;
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+        private class AuthOptions
+        {
+            const string Key = "secretTokenKey_75f20ca5491d8b37274290901f2c39b740293f7fb337591abd3";
+            public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Key));
         }
 
         public async Task<List<User>> GetAsync()
         {
             return await _collection.Find(x => true).ToListAsync();
         }
-        public async Task<User> GetAsync(string id)
+        public async Task<User> GetAsync(string? id, string? email)
         {
-            return await _collection.Find(x => x.Id == id).FirstOrDefaultAsync();
+            if (id != null) 
+            {
+                return await _collection.Find(x => x.Id == id).FirstOrDefaultAsync();
+            }
+            else
+            {
+                return await _collection.Find(x => x.Email == email).FirstOrDefaultAsync();
+            }
         }
         public async Task<User> GetEmailAsync(string email)
         {
