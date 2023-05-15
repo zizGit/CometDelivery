@@ -5,6 +5,7 @@ using MongoDB.Driver;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace CometFoodDelivery.Services
 {
@@ -57,6 +58,32 @@ namespace CometFoodDelivery.Services
             const string Key = "secretTokenKey_75f20ca5491d8b37274290901f2c39b740293f7fb337591abd3";
             public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Key));
+        }
+
+        public bool registrationAndUpdateRules(User user, ref registerData data)
+        {
+            var regex1 = new Regex(@"([a-zA-Z])");
+            var regex2 = new Regex(@"([0 - 9])");
+            //var regex3 = new Regex(@"([!,@,#,$,%,^,&,*,?,_,~])");
+            string[] allowableEmail = { ".com", ".net", ".ua" };
+
+            if (user.Pass.Length < 8 || !regex1.IsMatch(user.Pass) || !regex2.IsMatch(user.Pass))
+            {
+                data.Status = 400;
+                data.Pass = "Your password is too easy";
+            }
+            if (user.Phone.ToString().Length != 12)
+            {
+                data.Status = 400;
+                data.Phone = "Incorrect phone number";
+            }
+            if (!user.Email.Contains("@") || !allowableEmail.Any(x => user.Email.EndsWith(x)))
+            {
+                data.Status = 400;
+                data.Email = "Incorrect Email";
+            }
+            if (data.Status != 200) { return false; }
+            return true;
         }
 
         public async Task<List<User>> GetAsync()

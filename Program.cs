@@ -27,7 +27,8 @@ app.UseAuthentication() //jwt token
 
 //all routers
 app.MapGet("/", () => "Hello World!\nTo close this program, follow this link: .../exit\n\nAll routers:"
-                     + "\n.../api/users                     - GET, POST, PUT, DELETE"
+                     + "\n.../api/users                     - GET, POST, DELETE"
+                     + "\n.../api/users/[id:length(24)]     - PUT"
                      + "\n.../api/users/login               - POST"
                      + "\n.../api/users/registration        - POST\n"
                      + "\n.../api/shops                     - GET, POST"
