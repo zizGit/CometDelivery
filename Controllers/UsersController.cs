@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 namespace CometFoodDelivery.Controllers
 {
@@ -60,11 +61,37 @@ namespace CometFoodDelivery.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("registration")]
         public async Task<ActionResult<User>> Post(User newUser)
         {
+            registerData data = new registerData();
+            var regex1 = new Regex(@"([a-zA-Z])");
+            var regex2 = new Regex(@"([0 - 9])");
+            //var regex3 = new Regex(@"([!,@,#,$,%,^,&,*,?,_,~])");
+            string[] allowableEmail = { ".com", ".net", ".ua" };
+
             try
             {
+                if(newUser.Pass.Length < 8 || !regex1.IsMatch(newUser.Pass) || !regex2.IsMatch(newUser.Pass)) 
+                {
+                    data.Status = 400;
+                    data.Pass = "Your password is too easy";
+                }
+                if (newUser.Phone.ToString().Length != 12)
+                {
+                    data.Status = 400;
+                    data.Phone = "Incorrect phone number";
+                }
+                if (!newUser.Email.Contains("@") || !allowableEmail.Any(x => newUser.Email.EndsWith(x)))
+                {
+                    data.Status = 400;
+                    data.Email = "Incorrect Email";
+                }
+                if(data.Status != 200) 
+                {
+                    return BadRequest(Response.WriteAsJsonAsync(data));
+                }
+
                 var user = await _service.GetEmailAsync(newUser.Email);
                 if (user == null)
                 {
@@ -81,7 +108,7 @@ namespace CometFoodDelivery.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<JsonResult>> Login(UserLogin loginData)
+        public async Task<ActionResult> Login(UserLogin loginData)
         {
             try
             {
@@ -165,13 +192,5 @@ namespace CometFoodDelivery.Controllers
                 return BadRequest(ex.Message);
             }
         }
-    }
-
-    public class loginData 
-    {
-        public int Status { get; set; }
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string Token { get; set; }
     }
 }

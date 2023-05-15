@@ -48,9 +48,10 @@ app.UseAuthorization();
 
 //all routers
 app.MapGet("/", () => "Hello World!\nTo close this program, follow this link: .../exit\n\nAll routers:"
-                     + "\n.../api/users                     - GET, POST"
+                     + "\n.../api/users                     - GET"
                      + "\n.../api/users/[id:length(24)]     - GET, PUT, DELETE"
                      + "\n.../api/users/login               - POST"
+                     + "\n.../api/users/registration        - POST"
                      + "\n.../api/users/email/[email]       - GET\n"
                      + "\n.../api/shops                     - GET, POST"
                      + "\n.../api/shops/[name]              - GET, PUT, DELETE\n"

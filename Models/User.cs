@@ -23,7 +23,7 @@ namespace CometFoodDelivery.Models
         public string Pass { get; set; }
 
         [BsonElement("phone")]
-        public string Phone { get; set; }
+        public long Phone { get; set; }
     }
 
     public class UserLogin
@@ -33,5 +33,21 @@ namespace CometFoodDelivery.Models
 
         [BsonElement("pass")]
         public string Pass { get; set; }
+    }
+
+    public class loginData
+    {
+        public int Status { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Token { get; set; }
+    }
+
+    public class registerData
+    {
+        public int Status { get; set; } = 200;
+        public string Email { get; set; } = null!;
+        public string Pass { get; set; } = null!;
+        public string Phone { get; set; } = null!;
     }
 }
