@@ -1,7 +1,27 @@
 using CometFoodDelivery.Models;
 using CometFoodDelivery.Services;
+using Serilog;
+using Serilog.Events;
+using Serilog.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var logFileName = $"Logs/{DateTime.Now:yyyy-MM-dd-HH-mm-ss}-app.log";
+
+builder.Services.AddSingleton<Serilog.ILogger>(sp => {
+    var logger = new LoggerConfiguration().CreateLogger();
+    return logger;
+});
+
+Log.Logger = new LoggerConfiguration().Enrich.FromLogContext()
+                                      .MinimumLevel.Information()
+                                      .WriteTo.File(logFileName, rollingInterval: RollingInterval.Hour, 
+                                            rollOnFileSizeLimit: true, fileSizeLimitBytes: 1024 * 1024 * 5)
+                                      .CreateLogger();
+
+var host = Host.CreateDefaultBuilder(args).UseSerilog().Build();
+host.RunAsync();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.Configure<DatabaseConnectionStringSettings>(builder.Configuration.GetSection("DatabaseConnectionString"))
                 .Configure<UserDatabaseSettings>(builder.Configuration.GetSection("UserDatabase"))
@@ -9,7 +29,8 @@ builder.Services.Configure<DatabaseConnectionStringSettings>(builder.Configurati
                 .Configure<ProductsDatabaseSettings>(builder.Configuration.GetSection("ProductsDatabase"));
 
 builder.Services.AddSingleton<UsersService>()
-                .AddSingleton<ShopService>();
+                .AddSingleton<ShopService>()
+                .AddSingleton<DiagnosticContext>(); //for logs
 
 builder.Services.AddControllers();
 builder.Services.AddCors();
@@ -20,7 +41,22 @@ var app = builder.Build();
 
 app.UseCors(builder => builder.AllowAnyOrigin()
                               .AllowAnyHeader()
-                              .AllowAnyMethod()); 
+                              .AllowAnyMethod());
+
+app.UseSerilogRequestLogging(options => {
+    options.GetLevel = (httpContext, elapsed, ex) => LogEventLevel.Information;
+    options.EnrichDiagnosticContext = (diagnosticContext, httpContext) => {
+        diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value);
+        diagnosticContext.Set("RequestMethod", httpContext.Request.Method);
+        diagnosticContext.Set("RequestPath", httpContext.Request.Path);
+
+        diagnosticContext.Set("RequestId", httpContext.TraceIdentifier);
+        diagnosticContext.Set("RequestQueryString", httpContext.Request.QueryString.ToString());
+
+        diagnosticContext.Set("UserAgent", httpContext.Request.Headers["User-Agent"].ToString());
+        diagnosticContext.Set("RemoteIpAddress", httpContext.Connection.RemoteIpAddress.ToString());
+    };
+}); // logs write
 
 app.UseAuthentication() //jwt token
    .UseAuthorization(); 
@@ -41,5 +77,4 @@ app.MapGet("/", () => "Hello World!\nTo close this program, follow this link: ..
 app.MapGet("/exit/", () => Environment.Exit(0));
 
 app.MapControllers();
-
 app.Run();

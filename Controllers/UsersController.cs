@@ -84,7 +84,6 @@ namespace CometFoodDelivery.Controllers
                     {
                         loginData data = new loginData();
 
-                        data.Status = Response.StatusCode;
                         data.Id = user.Id;
                         data.Name = user.Name;
                         data.Token = _service.TokenCreate(user.Email);

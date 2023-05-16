@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CometFoodDelivery.Models
 {
@@ -43,7 +44,7 @@ namespace CometFoodDelivery.Models
     }
     public class loginData
     {
-        public int Status { get; set; }
+        public int Status { get; set; } = 200;
         public string Id { get; set; } = null!;
         public string Name { get; set; } = null!;
         public string Token { get; set; } = null!;
