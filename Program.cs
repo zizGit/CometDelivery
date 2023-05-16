@@ -16,7 +16,7 @@ builder.Services.AddSingleton<Serilog.ILogger>(sp => {
 Log.Logger = new LoggerConfiguration().Enrich.FromLogContext()
                                       .MinimumLevel.Information()
                                       .WriteTo.File(logFileName, rollingInterval: RollingInterval.Hour, 
-                                            rollOnFileSizeLimit: true, fileSizeLimitBytes: 1024 * 1024 * 5)
+                                            rollOnFileSizeLimit: true, fileSizeLimitBytes: 1024 * 1024 * 10)
                                       .CreateLogger();
 
 var host = Host.CreateDefaultBuilder(args).UseSerilog().Build();

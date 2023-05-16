@@ -47,7 +47,7 @@ namespace CometFoodDelivery.Controllers
                     return BadRequest(Response.WriteAsJsonAsync(data));
                 }
 
-                var user = await _service.GetEmailAsync(newUser.Email);
+                var user = await _service.GetAsync(null, newUser.Email);
                 if (user == null)
                 {
                     await _service.CreateAsync(newUser);
@@ -77,7 +77,7 @@ namespace CometFoodDelivery.Controllers
                 }
                 else if (loginData.Email != null && loginData.Pass != null)
                 {
-                    var user = await _service.GetEmailAsync(loginData.Email);
+                    var user = await _service.GetAsync(null, loginData.Email);
                     if (user == null) { return NotFound(); }
 
                     if (user.Email == loginData.Email && user.Pass == loginData.Pass)
