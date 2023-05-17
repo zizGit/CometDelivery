@@ -36,9 +36,25 @@ namespace CometFoodDelivery.Controllers
             }
         }
 
+        [HttpGet("type/{type}", Name = "GetShopByType")]
+        public async Task<ActionResult<List<Shop>>> GetByType(string type)
+        {
+            try
+            {
+                var shop = await _service.GetByTypeAsync(type);
+                if (shop == null) { return NotFound(); }
+                return shop;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult<Shop>> Post(Shop newShop)
         {
+            var shopError = new errorShopReturn();
             try
             {
                 var shop = await _service.GetAsync(newShop.Name);
@@ -47,7 +63,7 @@ namespace CometFoodDelivery.Controllers
                     await _service.CreateAsync(newShop);
                     return CreatedAtRoute("GetShopByName", new { name = newShop.Name }, _service.returnWith200(newShop));
                 }
-                return BadRequest("this shop is already registered");
+                return BadRequest(Response.WriteAsJsonAsync(shopError));
             }
             catch (Exception ex)
             {

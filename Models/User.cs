@@ -31,7 +31,7 @@ namespace CometFoodDelivery.Models
         public string? Token { get; set; } = null!;
     }
     
-    public class getData
+    public class getUserData
     {
         public string? Id { get; set; } = null!;
         public string? Email { get; set; } = null!;

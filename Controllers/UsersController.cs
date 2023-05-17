@@ -21,7 +21,7 @@ namespace CometFoodDelivery.Controllers
         }
 
         [HttpPost(Name = "GetUser")]
-        public async Task<ActionResult<userReturn>> Get(getData data)
+        public async Task<ActionResult<userReturn>> Get(getUserData data)
         {
             try
             {
@@ -133,7 +133,7 @@ namespace CometFoodDelivery.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> Delete(getData data)
+        public async Task<ActionResult> Delete(getUserData data)
         {
             var okReturn = new statusReturn();
 

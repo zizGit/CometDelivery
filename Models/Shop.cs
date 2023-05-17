@@ -16,7 +16,7 @@ namespace CometFoodDelivery.Models
         public string imageUrl { get; set; }
 
         [BsonElement("types")]
-        public List<string> types { get; set; }
+        public List<string> Types { get; set; }
 
         [BsonElement("deliveryCost")]
         public double deliveryCost { get; set; }
@@ -30,8 +30,14 @@ namespace CometFoodDelivery.Models
         public string? Id { get; set; }
         public string Name { get; set; }
         public string imageUrl { get; set; }
-        public List<string> types { get; set; }
+        public List<string> Types { get; set; }
         public double deliveryCost { get; set; }
         public List<int> deliveryTime { get; set; }
+    }
+
+    public class errorShopReturn
+    {
+        public int Status { get; } = 400;
+        public string Error { get; } = "this shop is already registered";
     }
 }
