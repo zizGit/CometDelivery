@@ -68,7 +68,6 @@ namespace CometFoodDelivery.Services
             var regex3 = new Regex(@"([0 - 9])");
             //var regex4 = new Regex(@"([!,@,#,$,%,^,&,*,?,_,~])");
             string[] allowableEmail = { ".com", ".net", ".ua" };
-            bool resultReturn = true;
 
             if (user.Pass.Length < 8 || !regex1.IsMatch(user.Pass) || !regex2.IsMatch(user.Pass) || 
                 !regex3.IsMatch(user.Pass)) { data.Pass = "Your password is too easy"; }

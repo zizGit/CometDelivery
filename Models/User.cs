@@ -61,12 +61,6 @@ namespace CometFoodDelivery.Models
         public int Status { get; } = 400;
         public string Error { get; } = "this email is already registered";
     }
-
-    public class statusReturn200
-    {
-        public int? Status { get; set; }
-    }
-
     public class userReturn 
     {
         public int Status { get; } = 200;

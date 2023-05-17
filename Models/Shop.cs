@@ -5,7 +5,6 @@ namespace CometFoodDelivery.Models
 {
     public class Shop
     {
-        // ? - значение null допустимо
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
@@ -23,6 +22,16 @@ namespace CometFoodDelivery.Models
         public double deliveryCost { get; set; }
 
         [BsonElement("deliveryTime")]
+        public List<int> deliveryTime { get; set; }
+    }
+    public class shopReturn
+    {
+        public int Status { get; } = 200;
+        public string? Id { get; set; }
+        public string Name { get; set; }
+        public string imageUrl { get; set; }
+        public List<string> types { get; set; }
+        public double deliveryCost { get; set; }
         public List<int> deliveryTime { get; set; }
     }
 }

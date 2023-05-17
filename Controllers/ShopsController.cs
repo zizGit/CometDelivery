@@ -22,16 +22,13 @@ namespace CometFoodDelivery.Controllers
         }
 
         [HttpGet("{name}", Name = "GetShopByName")]
-        public async Task<ActionResult<Shop>> Get(string name)
+        public async Task<ActionResult<shopReturn>> Get(string name)
         {
             try
             {
                 var shop = await _service.GetAsync(name);
-                if (shop == null)
-                {
-                    return NotFound();
-                }
-                return shop;
+                if (shop == null) { return NotFound(); }
+                return _service.returnWith200(shop); ;
             }
             catch (Exception ex)
             {
@@ -48,9 +45,8 @@ namespace CometFoodDelivery.Controllers
                 if (shop == null)
                 {
                     await _service.CreateAsync(newShop);
-                    return CreatedAtRoute("GetShopByName", new { name = newShop.Name }, newShop);
+                    return CreatedAtRoute("GetShopByName", new { name = newShop.Name }, _service.returnWith200(newShop));
                 }
-
                 return BadRequest("this shop is already registered");
             }
             catch (Exception ex)
@@ -62,18 +58,15 @@ namespace CometFoodDelivery.Controllers
         [HttpPut("{name}")]
         public async Task<IActionResult> Update(string name, Shop updatedShop)
         {
+            var okReturn = new statusReturn();
             try
             {
                 var shop = await _service.GetAsync(name);
-                if (shop == null)
-                {
-                    return NotFound();
-                }
-
+                if (shop == null) { return NotFound(); }
                 updatedShop.Name = shop.Name;
                 await _service.UpdateAsync(name, updatedShop);
-
-                return Ok($"StatusCode {Response.StatusCode}");
+                okReturn.Status = Response.StatusCode;
+                return Ok(okReturn);
             }
             catch (Exception ex)
             {
@@ -84,16 +77,14 @@ namespace CometFoodDelivery.Controllers
         [HttpDelete("{name}")]
         public async Task<IActionResult> Delete(string name)
         {
+            var okReturn = new statusReturn();
             try
             {
                 var shop = await _service.GetAsync(name);
-                if (shop == null)
-                {
-                    return NotFound();
-                }
-
+                if (shop == null) { return NotFound(); }
                 await _service.DeleteAsync(name);
-                return Ok($"StatusCode {Response.StatusCode}");
+                okReturn.Status = Response.StatusCode;
+                return Ok(okReturn);
             }
             catch (Exception ex)
             {

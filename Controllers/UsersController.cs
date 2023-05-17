@@ -67,8 +67,7 @@ namespace CometFoodDelivery.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> Login(UserLogin loginData)
         {
-            var okReturn = new statusReturn200();
-
+            var okReturn = new statusReturn();
             try
             {
                 if (loginData.Token != null) 
@@ -108,7 +107,7 @@ namespace CometFoodDelivery.Controllers
         public async Task<ActionResult> Update(string id, User updatedUser)
         {
             registerData data = new registerData();
-            var okReturn = new statusReturn200();
+            var okReturn = new statusReturn();
 
             try
             {
@@ -136,7 +135,7 @@ namespace CometFoodDelivery.Controllers
         [HttpDelete]
         public async Task<ActionResult> Delete(getData data)
         {
-            var okReturn = new statusReturn200();
+            var okReturn = new statusReturn();
 
             try
             {

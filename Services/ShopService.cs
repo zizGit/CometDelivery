@@ -15,6 +15,18 @@ namespace CometFoodDelivery.Services
             _collection = database.GetCollection<Shop>(databaseSettings.Value.CollectionName);
         }
 
+        public shopReturn returnWith200(Shop shop)
+        {
+            var shopReturn = new shopReturn();
+            shopReturn.Id = shop.Id;
+            shopReturn.Name = shop.Name;
+            shopReturn.imageUrl = shop.imageUrl;
+            shopReturn.types = shop.types;
+            shopReturn.deliveryCost = shop.deliveryCost;
+            shopReturn.deliveryTime = shop.deliveryTime;
+            return shopReturn;
+        }
+
         public async Task<List<Shop>> GetAsync()
         {
             return await _collection.Find(x => true).ToListAsync();
