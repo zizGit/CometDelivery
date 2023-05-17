@@ -67,13 +67,16 @@ namespace CometFoodDelivery.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> Login(UserLogin loginData)
         {
+            var okReturn = new statusReturn200();
+
             try
             {
                 if (loginData.Token != null) 
                 {
                     if (_service.ValidateToken(loginData.Token))
                     {
-                        return Ok(Response.StatusCode);
+                        okReturn.Status = Response.StatusCode;
+                        return Ok(okReturn);
                     }
                     else { return Unauthorized(); }
                 }
