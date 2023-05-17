@@ -62,27 +62,29 @@ namespace CometFoodDelivery.Services
 
         public bool registrationAndUpdateRules(User user, ref registerData data)
         {
-            var regex1 = new Regex(@"([a-zA-Z])");
-            var regex2 = new Regex(@"([0 - 9])");
-            //var regex3 = new Regex(@"([!,@,#,$,%,^,&,*,?,_,~])");
+            var regex1 = new Regex(@"([a-z])");
+            var regex2 = new Regex(@"([A-Z])");
+            var regex3 = new Regex(@"([0 - 9])");
+            //var regex4 = new Regex(@"([!,@,#,$,%,^,&,*,?,_,~])");
             string[] allowableEmail = { ".com", ".net", ".ua" };
+            bool resultReturn = true;
 
-            if (user.Pass.Length < 8 || !regex1.IsMatch(user.Pass) || !regex2.IsMatch(user.Pass))
+            if (user.Pass.Length < 8 || !regex1.IsMatch(user.Pass) || !regex2.IsMatch(user.Pass) || !regex3.IsMatch(user.Pass))
             {
-                data.Status = 400;
+                resultReturn = false;
                 data.Pass = "Your password is too easy";
             }
             if (user.Phone.ToString().Length != 12)
             {
-                data.Status = 400;
+                resultReturn = false;
                 data.Phone = "Incorrect phone number";
             }
             if (!user.Email.Contains("@") || !allowableEmail.Any(x => user.Email.EndsWith(x)))
             {
-                data.Status = 400;
+                resultReturn = false;
                 data.Email = "Incorrect Email";
             }
-            if (data.Status != 200) { return false; }
+            if (!resultReturn) { return false; }
             return true;
         }
 
@@ -100,10 +102,6 @@ namespace CometFoodDelivery.Services
             {
                 return await _collection.Find(x => x.Email == email).FirstOrDefaultAsync();
             }
-        }
-        public async Task<User> GetEmailAsync(string email)
-        {
-            return await _collection.Find(x => x.Email == email).FirstOrDefaultAsync();
         }
         public async Task<User> CreateAsync(User newUser)
         {

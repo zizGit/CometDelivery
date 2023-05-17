@@ -1,6 +1,5 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
-using Microsoft.AspNetCore.Mvc;
 
 namespace CometFoodDelivery.Models
 {
@@ -51,9 +50,19 @@ namespace CometFoodDelivery.Models
     }
     public class registerData
     {
-        public int Status { get; set; } = 200;
-        public string Email { get; set; } = null!;
-        public string Pass { get; set; } = null!;
-        public string Phone { get; set; } = null!;
+        public string? Email { get; set; }
+        public string? Pass { get; set; }
+        public string? Phone { get; set; }
+    }
+
+    public class errorReturn
+    {
+        public int Status { get; } = 400;
+        public registerData? Errors { get; set; }
+    }
+    public class errorEmailReturn
+    {
+        public int Status { get; } = 400;
+        public string Error { get; } = "this email is already registered";
     }
 }

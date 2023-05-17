@@ -38,13 +38,15 @@ namespace CometFoodDelivery.Controllers
         [HttpPost("registration")]
         public async Task<ActionResult<User>> Post(User newUser)
         {
-            registerData data = new registerData();
+            var data = new registerData();
+            var emailError = new errorEmailReturn();
 
             try
             {
                 if (!_service.registrationAndUpdateRules(newUser, ref data)) 
                 {
-                    return BadRequest(Response.WriteAsJsonAsync(data));
+                    var responce = new errorReturn { Errors = data };
+                    return BadRequest(Response.WriteAsJsonAsync(responce));
                 }
 
                 var user = await _service.GetAsync(null, newUser.Email);
@@ -53,8 +55,8 @@ namespace CometFoodDelivery.Controllers
                     await _service.CreateAsync(newUser);
                     return CreatedAtRoute("GetUser", new { id = newUser.Id }, newUser);
                 }
-
-                return BadRequest("this email is already registered");
+                
+                return BadRequest(Response.WriteAsJsonAsync(emailError));
             }
             catch (Exception ex)
             {
@@ -111,7 +113,8 @@ namespace CometFoodDelivery.Controllers
 
                 if (!_service.registrationAndUpdateRules(updatedUser, ref data))
                 {
-                    return BadRequest(Response.WriteAsJsonAsync(data));
+                    var responce = new errorReturn { Errors = data };
+                    return BadRequest(Response.WriteAsJsonAsync(responce));
                 }
 
                 updatedUser.Id = user.Id;

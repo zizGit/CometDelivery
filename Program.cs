@@ -15,7 +15,7 @@ builder.Services.AddSingleton<Serilog.ILogger>(sp => {
 
 Log.Logger = new LoggerConfiguration().Enrich.FromLogContext()
                                       .MinimumLevel.Information()
-                                      .WriteTo.File(logFileName, rollingInterval: RollingInterval.Hour, 
+                                      .WriteTo.File(logFileName, rollingInterval: RollingInterval.Day, 
                                             rollOnFileSizeLimit: true, fileSizeLimitBytes: 1024 * 1024 * 10)
                                       .CreateLogger();
 
@@ -46,15 +46,8 @@ app.UseCors(builder => builder.AllowAnyOrigin()
 app.UseSerilogRequestLogging(options => {
     options.GetLevel = (httpContext, elapsed, ex) => LogEventLevel.Information;
     options.EnrichDiagnosticContext = (diagnosticContext, httpContext) => {
-        diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value);
         diagnosticContext.Set("RequestMethod", httpContext.Request.Method);
         diagnosticContext.Set("RequestPath", httpContext.Request.Path);
-
-        diagnosticContext.Set("RequestId", httpContext.TraceIdentifier);
-        diagnosticContext.Set("RequestQueryString", httpContext.Request.QueryString.ToString());
-
-        diagnosticContext.Set("UserAgent", httpContext.Request.Headers["User-Agent"].ToString());
-        diagnosticContext.Set("RemoteIpAddress", httpContext.Connection.RemoteIpAddress.ToString());
     };
 }); // logs write
 
