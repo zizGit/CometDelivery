@@ -26,13 +26,8 @@ namespace CometFoodDelivery.Models
     }
     public class UserLogin
     {
-        [BsonElement("email")]
         public string? Email { get; set; } = null!;
-
-        [BsonElement("pass")]
         public string? Pass { get; set; } = null!;
-
-        [BsonElement("token")]
         public string? Token { get; set; } = null!;
     }
     
@@ -53,6 +48,7 @@ namespace CometFoodDelivery.Models
         public string? Email { get; set; }
         public string? Pass { get; set; }
         public string? Phone { get; set; }
+        public string? Age { get; set; }
     }
 
     public class errorReturn
@@ -64,5 +60,16 @@ namespace CometFoodDelivery.Models
     {
         public int Status { get; } = 400;
         public string Error { get; } = "this email is already registered";
+    }
+
+    public class userReturn 
+    {
+        public int Status { get; } = 200;
+        public string? Id { get; set; }
+        public string Name { get; set; } = null!;
+        public int? Age { get; set; }
+        public string Email { get; set; } = null!;
+        public string Pass { get; set; } = null!;
+        public long Phone { get; set; }
     }
 }

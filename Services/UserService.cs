@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -69,23 +70,37 @@ namespace CometFoodDelivery.Services
             string[] allowableEmail = { ".com", ".net", ".ua" };
             bool resultReturn = true;
 
-            if (user.Pass.Length < 8 || !regex1.IsMatch(user.Pass) || !regex2.IsMatch(user.Pass) || !regex3.IsMatch(user.Pass))
+            if (user.Pass.Length < 8 || !regex1.IsMatch(user.Pass) || !regex2.IsMatch(user.Pass) || 
+                !regex3.IsMatch(user.Pass)) { data.Pass = "Your password is too easy"; }
+
+            if (user.Phone.ToString().Length != 12) { data.Phone = "Incorrect phone number"; }
+
+            if (!user.Email.Contains("@") || !allowableEmail.Any(x => user.Email.EndsWith(x))) { data.Email = "Incorrect Email"; }
+
+            if (user.Age < 14) { data.Age = "You must be 14 or older"; }
+
+            foreach (PropertyInfo property in data.GetType().GetProperties())
             {
-                resultReturn = false;
-                data.Pass = "Your password is too easy";
+                object value = property.GetValue(data, null);
+                if (value != null || (value is string && string.IsNullOrEmpty(value as string)))
+                {
+                    return false;
+                }
             }
-            if (user.Phone.ToString().Length != 12)
-            {
-                resultReturn = false;
-                data.Phone = "Incorrect phone number";
-            }
-            if (!user.Email.Contains("@") || !allowableEmail.Any(x => user.Email.EndsWith(x)))
-            {
-                resultReturn = false;
-                data.Email = "Incorrect Email";
-            }
-            if (!resultReturn) { return false; }
+
             return true;
+        }
+
+        public userReturn returnWith200(User user) 
+        {
+            var userReturn = new userReturn();
+            userReturn.Id = user.Id;
+            userReturn.Name = user.Name;
+            userReturn.Age = user.Age;
+            userReturn.Email = user.Email;
+            userReturn.Pass = user.Pass;
+            userReturn.Phone = user.Phone;
+            return userReturn;
         }
 
         public async Task<List<User>> GetAsync()

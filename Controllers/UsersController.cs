@@ -21,13 +21,13 @@ namespace CometFoodDelivery.Controllers
         }
 
         [HttpPost(Name = "GetUser")]
-        public async Task<ActionResult<User>> Get(getData data)
+        public async Task<ActionResult<userReturn>> Get(getData data)
         {
             try
             {
                 var user = await _service.GetAsync(data.Id, data.Email);
                 if (user == null) { return NotFound(); }
-                return user;
+                return _service.returnWith200(user);
             }
             catch (Exception ex)
             {
@@ -53,7 +53,7 @@ namespace CometFoodDelivery.Controllers
                 if (user == null)
                 {
                     await _service.CreateAsync(newUser);
-                    return CreatedAtRoute("GetUser", new { id = newUser.Id }, newUser);
+                    return CreatedAtRoute("GetUser", new { id = newUser.Id }, _service.returnWith200(newUser));
                 }
                 
                 return BadRequest(Response.WriteAsJsonAsync(emailError));
