@@ -108,6 +108,7 @@ namespace CometFoodDelivery.Controllers
         public async Task<ActionResult> Update(string id, User updatedUser)
         {
             registerData data = new registerData();
+            var okReturn = new statusReturn200();
 
             try
             {
@@ -122,7 +123,9 @@ namespace CometFoodDelivery.Controllers
 
                 updatedUser.Id = user.Id;
                 await _service.UpdateAsync(id, updatedUser);
-                return Ok(Response.StatusCode);
+
+                okReturn.Status = Response.StatusCode;
+                return Ok(okReturn);
             }
             catch (Exception ex)
             {
@@ -133,6 +136,8 @@ namespace CometFoodDelivery.Controllers
         [HttpDelete]
         public async Task<ActionResult> Delete(getData data)
         {
+            var okReturn = new statusReturn200();
+
             try
             {
                 var user = await _service.GetAsync(data.Id, data.Email);
@@ -140,7 +145,8 @@ namespace CometFoodDelivery.Controllers
                 if (data.Id == null) { data.Id = user.Id; }
 
                 await _service.DeleteAsync(data.Id);
-                return Ok(Response.StatusCode);
+                okReturn.Status = Response.StatusCode;
+                return Ok(okReturn);
             }
             catch (Exception ex)
             {
