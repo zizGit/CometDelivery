@@ -46,7 +46,8 @@ namespace CometFoodDelivery.Controllers
                 if (!_service.registrationAndUpdateRules(newUser, ref data)) 
                 {
                     var responce = new errorReturn { Errors = data };
-                    return BadRequest(Response.WriteAsJsonAsync(responce));
+                    await Response.WriteAsJsonAsync(responce);
+                    return BadRequest(responce);
                 }
 
                 var user = await _service.GetAsync(null, newUser.Email);
@@ -55,8 +56,9 @@ namespace CometFoodDelivery.Controllers
                     await _service.CreateAsync(newUser);
                     return CreatedAtRoute("GetUser", new { id = newUser.Id }, _service.returnWith200(newUser));
                 }
-                
-                return BadRequest(Response.WriteAsJsonAsync(emailError));
+
+                await Response.WriteAsJsonAsync(emailError);
+                return BadRequest(emailError);
             }
             catch (Exception ex)
             {
@@ -92,7 +94,8 @@ namespace CometFoodDelivery.Controllers
                         data.Name = user.Name;
                         data.Token = _service.TokenCreate(user.Email);
 
-                        return Ok(Response.WriteAsJsonAsync(data));
+                        await Response.WriteAsJsonAsync(data);
+                        return Ok(data);
                     }
                 }
                 return BadRequest();
@@ -108,21 +111,19 @@ namespace CometFoodDelivery.Controllers
         {
             registerData data = new registerData();
             var okReturn = new statusReturn();
-
             try
             {
                 var user = await _service.GetAsync(id, null);
                 if (user == null) { return NotFound(); }
-
                 if (!_service.registrationAndUpdateRules(updatedUser, ref data))
                 {
                     var responce = new errorReturn { Errors = data };
-                    return BadRequest(Response.WriteAsJsonAsync(responce));
+                    await Response.WriteAsJsonAsync(responce);
+                    return BadRequest(responce);
                 }
 
                 updatedUser.Id = user.Id;
                 await _service.UpdateAsync(id, updatedUser);
-
                 okReturn.Status = Response.StatusCode;
                 return Ok(okReturn);
             }
@@ -136,7 +137,6 @@ namespace CometFoodDelivery.Controllers
         public async Task<ActionResult> Delete(getUserData data)
         {
             var okReturn = new statusReturn();
-
             try
             {
                 var user = await _service.GetAsync(data.Id, data.Email);

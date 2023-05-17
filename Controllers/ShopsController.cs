@@ -63,7 +63,8 @@ namespace CometFoodDelivery.Controllers
                     await _service.CreateAsync(newShop);
                     return CreatedAtRoute("GetShopByName", new { name = newShop.Name }, _service.returnWith200(newShop));
                 }
-                return BadRequest(Response.WriteAsJsonAsync(shopError));
+                await Response.WriteAsJsonAsync(shopError);
+                return BadRequest(shopError);
             }
             catch (Exception ex)
             {
