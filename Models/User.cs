@@ -45,7 +45,6 @@ namespace CometFoodDelivery.Models
         public string? Email { get; set; }
         public string? Pass { get; set; }
         public string? Phone { get; set; }
-        public string? Age { get; set; }
     }
 
     public class errorReturn
@@ -63,7 +62,6 @@ namespace CometFoodDelivery.Models
         public int Status { get; } = 200;
         public string? Id { get; set; }
         public string Name { get; set; } = null!;
-        public int? Age { get; set; }
         public string Email { get; set; } = null!;
         public string Pass { get; set; } = null!;
         public long Phone { get; set; }
