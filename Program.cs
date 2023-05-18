@@ -30,6 +30,7 @@ builder.Services.Configure<DatabaseConnectionStringSettings>(builder.Configurati
 
 builder.Services.AddSingleton<UsersService>()
                 .AddSingleton<ShopService>()
+                .AddSingleton<ProductService>()
                 .AddSingleton<DiagnosticContext>(); //for logs
 
 builder.Services.AddControllers();
@@ -56,16 +57,17 @@ app.UseAuthentication() //jwt token
 
 //all routers
 app.MapGet("/", () => "Hello World!\nTo close this program, follow this link: .../exit\n\nAll routers:"
-                     + "\n.../api/users                     - GET, POST, DELETE"
-                     + "\n.../api/users/[id:length(24)]     - PUT"
-                     + "\n.../api/users/login               - POST"
+                     + "\n.../api/users                     - GET (get all), POST (get by _id_ or _email_)"
+                     + "\n.../api/users/[id:length(24)]     - PUT, DELETE"
+                     + "\n.../api/users/login               - POST (_get_ token or _validate_ token)"
                      + "\n.../api/users/registration        - POST\n"
-                     + "\n.../api/shops                     - GET, POST"
-                     + "\n.../api/shops/[name]              - GET, PUT, DELETE\n"
-                     + "\n.../api/"
-                     + "\n.../api/"
-                     + "\n.../api/"
-                     + "\n.../api/");
+                     + "\n.../api/shops                     - GET (get all), POST (create new)"
+                     + "\n.../api/shops/[name]              - GET, PUT, DELETE"
+                     + "\n.../api/shops/type/[type]         - GET\n"
+                     + "\n.../api/products                  - GET (get all), POST (get by _shop_ and _type_ or only _type_)"
+                     + "\n.../api/products/[shop]           - GET"
+                     + "\n.../api/products/[id:length(24)]  - PUT, DELETE"
+                     + "\n.../api/products/new              - POST");
 
 app.MapGet("/exit/", () => Environment.Exit(0));
 

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CometFoodDelivery.Controllers
 {
     [ApiController]
-    [Route("api/shops/[controller]")]
+    [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
         private readonly ProductService _service;
@@ -21,34 +21,13 @@ namespace CometFoodDelivery.Controllers
             return await _service.GetAsync();
         }
 
-        [HttpGet("{type}", Name = "GetProductByType")]
-        public async Task<ActionResult<Product>> Get(string type)
-        {
-            try
-            {
-                var product = await _service.GetAsync(type);
-                if (product == null)
-                {
-                    return NotFound();
-                }
-                return product;
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet("byshop/{shopName}", Name = "GetProductByShop")]
-        public async Task<ActionResult<Product>> GetByShop(string shop)
+        [HttpGet("{shop}", Name = "GetProductByShop")]
+        public async Task<ActionResult<List<Product>>> GetByShop(string shop)
         {
             try
             {
                 var product = await _service.GetByShopAsync(shop);
-                if (product == null)
-                {
-                    return NotFound();
-                }
+                if (product == null) { return NotFound(); }
                 return product;
             }
             catch (Exception ex)
@@ -58,19 +37,43 @@ namespace CometFoodDelivery.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Product>> Post(Product newProduct)
+        public async Task<ActionResult<List<Product>>> Get(ProductShopAndType data)
         {
             try
             {
-                var product = await _service.GetByShopAsync(newProduct.Shop);
+                if (data.Shop != null) 
+                {
+                    var product = await _service.GetByShopAsync(data.Shop);
+                    if (product == null) { return NotFound(); }
+                    return await _service.GetByShopAndTypeAsync(data.Shop, data.Type);
+                }
+                else
+                {
+                    var product = await _service.GetByTypeAsync(data.Type);
+                    if (product == null) { return NotFound(); }
+                    return await _service.GetByTypeAsync(data.Type);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("new")]
+        public async Task<ActionResult<Product>> Post(Product newProduct)
+        {
+            var productError = new errorProductReturn();
+            try
+            {
+                var product = await _service.GetByShopTypeNameAsync(newProduct.Shop, newProduct.Type, newProduct.Name);
                 if (product == null)
                 {
                     await _service.CreateAsync(newProduct);
                     return CreatedAtRoute("GetProductByShop", new { shop = newProduct.Shop }, newProduct);
                 }
-
-                return BadRequest("this product is already registered in this shop");
-
+                await Response.WriteAsJsonAsync(productError);
+                return BadRequest(productError);
             }
             catch (Exception ex)
             {
@@ -78,55 +81,18 @@ namespace CometFoodDelivery.Controllers
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-        //[HttpPut("{name}")]
-        //public async Task<IActionResult> Update(string name, Shop updatedShop)
-        //{
-        //    try
-        //    {
-        //        var shop = await _service.GetAsync(name);
-        //        if (shop == null)
-        //        {
-        //            return NotFound();
-        //        }
-
-        //        updatedShop.Name = shop.Name;
-        //        await _service.UpdateAsync(name, updatedShop);
-
-        //        return Ok($"StatusCode {Response.StatusCode}");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
-
-
-
-        [HttpDelete("{type}")]
-        public async Task<IActionResult> Delete(string type)
+        [HttpPut("{id:length(24)}")]
+        public async Task<IActionResult> Update(string id, Product updatedProduct)
         {
+            var okReturn = new statusReturn();
             try
             {
-                var product = await _service.GetAsync(type);
-                if (product == null)
-                {
-                    return NotFound();
-                }
-
-                await _service.DeleteAsync(type);
-                return Ok($"StatusCode {Response.StatusCode}");
+                var product = await _service.GetByIdAsync(id);
+                if (product == null) { return NotFound(); }
+                updatedProduct.Id = id;
+                await _service.UpdateAsync(id, updatedProduct);
+                okReturn.Status = Response.StatusCode;
+                return Ok(okReturn);
             }
             catch (Exception ex)
             {
@@ -134,21 +100,17 @@ namespace CometFoodDelivery.Controllers
             }
         }
 
-        [HttpDelete("{shopName}/{name}")]
-        public async Task<IActionResult> Delete(string shop, string name)
+        [HttpDelete("{id:length(24)}")]
+        public async Task<IActionResult> Delete(string id)
         {
+            var okReturn = new statusReturn();
             try
             {
-                var productShop = await _service.GetByShopAsync(shop);
-                //var productName = await _service.GetByNameAsync(name);
-
-                if (productShop == null/* || productName == null*/)
-                {
-                    return NotFound();
-                }
-
-                await _service.DeleteAsync(name);
-                return Ok($"StatusCode {Response.StatusCode}");
+                var product = await _service.GetByIdAsync(id);
+                if (product == null) { return NotFound(); }
+                await _service.DeleteAsync(id);
+                okReturn.Status = Response.StatusCode;
+                return Ok(okReturn);
             }
             catch (Exception ex)
             {

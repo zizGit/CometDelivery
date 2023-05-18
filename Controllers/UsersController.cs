@@ -133,17 +133,15 @@ namespace CometFoodDelivery.Controllers
             }
         }
 
-        [HttpDelete]
-        public async Task<ActionResult> Delete(getUserData data)
+        [HttpDelete("{id:length(24)}")]
+        public async Task<ActionResult> Delete(string id)
         {
             var okReturn = new statusReturn();
             try
             {
-                var user = await _service.GetAsync(data.Id, data.Email);
+                var user = await _service.GetAsync(id, null);
                 if (user == null) { return NotFound(); }
-                if (data.Id == null) { data.Id = user.Id; }
-
-                await _service.DeleteAsync(data.Id);
+                await _service.DeleteAsync(id);
                 okReturn.Status = Response.StatusCode;
                 return Ok(okReturn);
             }

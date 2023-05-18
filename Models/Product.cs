@@ -15,16 +15,25 @@ namespace CometFoodDelivery.Models
         [BsonElement("type")]
         public string Type { get; set; }
 
-        [BsonElement("NameAndPrice")]
-        public List<ProductsNameAndPrice> ProductNameAndPrice { get; set; }
-    }
-
-    public class ProductsNameAndPrice
-    {
         [BsonElement("name")]
         public string Name { get; set; }
 
         [BsonElement("price")]
         public double Price { get; set; }
+
+        [BsonElement("imageUrl")]
+        public string imageUrl { get; set; }
+    }
+
+    public class ProductShopAndType 
+    {
+        public string? Shop { get; set; }
+        public string Type { get; set; }
+    }
+
+    public class errorProductReturn
+    {
+        public int Status { get; } = 400;
+        public string Error { get; } = "this product is already registered in this shop";
     }
 }
