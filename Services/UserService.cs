@@ -76,8 +76,6 @@ namespace CometFoodDelivery.Services
 
             if (!user.Email.Contains("@") || !allowableEmail.Any(x => user.Email.EndsWith(x))) { data.Email = "Incorrect Email"; }
 
-            if (user.Age < 14) { data.Age = "You must be 14 or older"; }
-
             foreach (PropertyInfo property in data.GetType().GetProperties())
             {
                 object value = property.GetValue(data, null);
@@ -95,7 +93,6 @@ namespace CometFoodDelivery.Services
             var userReturn = new userReturn();
             userReturn.Id = user.Id;
             userReturn.Name = user.Name;
-            userReturn.Age = user.Age;
             userReturn.Email = user.Email;
             userReturn.Pass = user.Pass;
             userReturn.Phone = user.Phone;

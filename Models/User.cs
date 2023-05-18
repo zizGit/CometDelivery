@@ -12,9 +12,6 @@ namespace CometFoodDelivery.Models
         [BsonElement("name")]
         public string Name { get; set; } = null!;
 
-        [BsonElement("age")]
-        public int? Age { get; set; }
-
         [BsonElement("email")]
         public string Email { get; set; } = null!;
 
