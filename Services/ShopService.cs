@@ -43,7 +43,7 @@ namespace CometFoodDelivery.Services
 
             foreach(var shop in temp) 
             {
-                if(shop.Name.StartsWith(name.ToLower()) || shop.Name.StartsWith(name.ToUpper())) 
+                if(shop.Name.ToLower().StartsWith(name.ToLower())) 
                 {
                     resultReturn.Add(returnWith200(shop));
                 }
