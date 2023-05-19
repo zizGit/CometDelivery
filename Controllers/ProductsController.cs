@@ -37,11 +37,11 @@ namespace CometFoodDelivery.Controllers
         }
 
         [HttpGet("{shop}/{section}")]
-        public async Task<ActionResult<List<Product>>> GetByShopAndSection(string shop)
+        public async Task<ActionResult<List<Product>>> GetByShopAndSection(string shop, string section)
         {
             try
             {
-                var product = await _service.GetByShopAsync(shop);
+                var product = await _service.GetByShopAndSectionAsync(shop, section);
                 if (product == null) { return NotFound(); }
                 return product;
             }
