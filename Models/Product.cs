@@ -15,6 +15,9 @@ namespace CometFoodDelivery.Models
         [BsonElement("type")]
         public string Type { get; set; }
 
+        [BsonElement("section")]
+        public string Section { get; set; }
+
         [BsonElement("name")]
         public string Name { get; set; }
 

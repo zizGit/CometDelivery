@@ -18,6 +18,9 @@ namespace CometFoodDelivery.Models
         [BsonElement("types")]
         public List<string> Types { get; set; }
 
+        [BsonElement("sections")]
+        public List<string> Sections { get; set; }
+
         [BsonElement("deliveryCost")]
         public double deliveryCost { get; set; }
 
@@ -31,6 +34,7 @@ namespace CometFoodDelivery.Models
         public string Name { get; set; }
         public string imageUrl { get; set; }
         public List<string> Types { get; set; }
+        public List<string> Sections { get; set; }
         public double deliveryCost { get; set; }
         public List<int> deliveryTime { get; set; }
     }

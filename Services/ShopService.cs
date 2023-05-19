@@ -22,6 +22,7 @@ namespace CometFoodDelivery.Services
             shopReturn.Name = shop.Name;
             shopReturn.imageUrl = shop.imageUrl;
             shopReturn.Types = shop.Types;
+            shopReturn.Sections = shop.Sections;
             shopReturn.deliveryCost = shop.deliveryCost;
             shopReturn.deliveryTime = shop.deliveryTime;
             return shopReturn;
@@ -34,6 +35,20 @@ namespace CometFoodDelivery.Services
         public async Task<Shop> GetAsync(string name)
         {
             return await _collection.Find(x => x.Name == name).FirstOrDefaultAsync();
+        }
+        public async Task<List<shopReturn>> GetSearchAsync(string name)
+        {
+            var temp = await _collection.Find(x => true).ToListAsync();
+            var resultReturn = new List<shopReturn>();
+
+            foreach(var shop in temp) 
+            {
+                if(shop.Name.StartsWith(name.ToLower()) || shop.Name.StartsWith(name.ToUpper())) 
+                {
+                    resultReturn.Add(returnWith200(shop));
+                }
+            }
+            return resultReturn;
         }
         public async Task<List<Shop>> GetByTypeAsync(string type)
         {

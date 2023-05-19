@@ -63,9 +63,11 @@ app.MapGet("/", () => "Hello World!\nTo close this program, follow this link: ..
                      + "\n.../api/users/registration        - POST\n"
                      + "\n.../api/shops                     - GET (get all), POST (create new)"
                      + "\n.../api/shops/[name]              - GET, PUT, DELETE"
+                     + "\n.../api/shops/search/[name]       - GET"
                      + "\n.../api/shops/type/[type]         - GET\n"
                      + "\n.../api/products                  - GET (get all), POST (get by _shop_ and _type_ or only _type_)"
                      + "\n.../api/products/[shop]           - GET"
+                     + "\n.../api/products/[shop]/[section] - GET"
                      + "\n.../api/products/[id:length(24)]  - PUT, DELETE"
                      + "\n.../api/products/new              - POST");
 

@@ -28,7 +28,22 @@ namespace CometFoodDelivery.Controllers
             {
                 var shop = await _service.GetAsync(name);
                 if (shop == null) { return NotFound(); }
-                return _service.returnWith200(shop); ;
+                return _service.returnWith200(shop);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("search/{name}")]
+        public async Task<ActionResult<List<shopReturn>>> GetSearch(string name)
+        {
+            try
+            {
+                var shop = await _service.GetSearchAsync(name);
+                if (shop == null) { return NotFound(); }
+                return shop;
             }
             catch (Exception ex)
             {

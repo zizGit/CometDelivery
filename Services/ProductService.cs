@@ -25,6 +25,11 @@ namespace CometFoodDelivery.Services
             var filter = Builders<Product>.Filter.Eq(x => x.Type, type) & Builders<Product>.Filter.Eq(x => x.Shop, shop);
             return await _collection.Find(filter).ToListAsync();          
         }
+        public async Task<List<Product>> GetByShopAndSectionAsync(string shop, string section)
+        {
+            var filter = Builders<Product>.Filter.Eq(x => x.Section, section) & Builders<Product>.Filter.Eq(x => x.Shop, shop);
+            return await _collection.Find(filter).ToListAsync();
+        }
         public async Task<Product> GetByShopTypeNameAsync(string shop, string type, string name)
         {
             var temp = await _collection.Find(x => x.Shop == shop).FirstOrDefaultAsync();

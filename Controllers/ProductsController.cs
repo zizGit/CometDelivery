@@ -36,6 +36,21 @@ namespace CometFoodDelivery.Controllers
             }
         }
 
+        [HttpGet("{shop}/{section}")]
+        public async Task<ActionResult<List<Product>>> GetByShopAndSection(string shop)
+        {
+            try
+            {
+                var product = await _service.GetByShopAsync(shop);
+                if (product == null) { return NotFound(); }
+                return product;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult<List<Product>>> Get(ProductShopAndType data)
         {
