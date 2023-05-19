@@ -76,6 +76,9 @@ namespace CometFoodDelivery.Services
 
             if (!user.Email.Contains("@") || !allowableEmail.Any(x => user.Email.EndsWith(x))) { data.Email = "Incorrect Email"; }
 
+            if(user.Role != "USER" && user.Role != "ADMIN") { data.Role = "Role can be only _USER_ or _ADMIN_"; }
+
+            //if data not empty - errors found
             foreach (PropertyInfo property in data.GetType().GetProperties())
             {
                 object value = property.GetValue(data, null);
@@ -96,6 +99,7 @@ namespace CometFoodDelivery.Services
             userReturn.Email = user.Email;
             userReturn.Pass = user.Pass;
             userReturn.Phone = user.Phone;
+            userReturn.Role = user.Role;
             return userReturn;
         }
 
