@@ -5,13 +5,22 @@ using Serilog.Events;
 using Serilog.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
-
 var logFileName = $"Logs/{DateTime.Now:yyyy-MM-dd-HH-mm-ss}-app.log";
+
+builder.Services.AddLogging(loggingBuilder =>
+{
+    loggingBuilder.ClearProviders(); // Removing default logging providers
+    loggingBuilder.AddSerilog(dispose: true); // Add Serilog in ILoggerFactory
+});
 
 builder.Services.AddSingleton<Serilog.ILogger>(sp => {
     var logger = new LoggerConfiguration().CreateLogger();
     return logger;
 });
+
+//for logs
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<DiagnosticContext>(); 
 
 Log.Logger = new LoggerConfiguration().Enrich.FromLogContext()
                                       .MinimumLevel.Information()
@@ -21,7 +30,6 @@ Log.Logger = new LoggerConfiguration().Enrich.FromLogContext()
 
 var host = Host.CreateDefaultBuilder(args).UseSerilog().Build();
 host.RunAsync();
-builder.Services.AddHttpContextAccessor();
 
 builder.Services.Configure<DatabaseConnectionStringSettings>(builder.Configuration.GetSection("DatabaseConnectionString"))
                 .Configure<UserDatabaseSettings>(builder.Configuration.GetSection("UserDatabase"))
@@ -30,8 +38,7 @@ builder.Services.Configure<DatabaseConnectionStringSettings>(builder.Configurati
 
 builder.Services.AddSingleton<UsersService>()
                 .AddSingleton<ShopService>()
-                .AddSingleton<ProductService>()
-                .AddSingleton<DiagnosticContext>(); //for logs
+                .AddSingleton<ProductService>();
 
 builder.Services.AddControllers();
 builder.Services.AddCors();
@@ -44,13 +51,22 @@ app.UseCors(builder => builder.AllowAnyOrigin()
                               .AllowAnyHeader()
                               .AllowAnyMethod());
 
-app.UseSerilogRequestLogging(options => {
-    options.GetLevel = (httpContext, elapsed, ex) => LogEventLevel.Information;
-    options.EnrichDiagnosticContext = (diagnosticContext, httpContext) => {
+// logs write
+app.UseSerilogRequestLogging(options =>
+{
+    options.GetLevel = (httpContext, elapsed, ex) =>
+    {
+        return LogEventLevel.Information;
+    };
+    options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
+    {
         diagnosticContext.Set("RequestMethod", httpContext.Request.Method);
         diagnosticContext.Set("RequestPath", httpContext.Request.Path);
+        diagnosticContext.Set("RemoteIpAddress", httpContext.Connection.RemoteIpAddress.ToString());
+        diagnosticContext.Set("UserAgent", httpContext.Request.Headers["User-Agent"].ToString());
+        diagnosticContext.Set("RequestId", httpContext.TraceIdentifier);
     };
-}); // logs write
+});
 
 app.UseAuthentication() //jwt token
    .UseAuthorization(); 
