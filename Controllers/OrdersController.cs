@@ -35,76 +35,27 @@ namespace CometFoodDelivery.Controllers
             }
         }
 
-        //[HttpPost("registration")]
-        //public async Task<ActionResult<User>> Post(User newUser)
-        //{
-        //    var data = new registerData();
-        //    var emailError = new errorReturn();
-        //    try
-        //    {
-        //        if (!_service.registrationAndUpdateRules(newUser, ref data))
-        //        {
-        //            var responce = new registerErrorReturn { Errors = data };
-        //            await Response.WriteAsJsonAsync(responce);
-        //            return BadRequest(responce);
-        //        }
+        [HttpPost]
+        public async Task<ActionResult<Order>> Post(Order newOrder)
+        {
+            var data = new orderData();
+            try
+            {
+                if (!_service.newOrderRules(newOrder, ref data))
+                {
+                    var responce = new orderErrorReturn { Errors = data };
+                    await Response.WriteAsJsonAsync(responce);
+                    return BadRequest(responce);
+                }
 
-        //        var user = await _service.GetAsync(null, newUser.Email);
-        //        if (user == null)
-        //        {
-        //            await _service.CreateAsync(newUser);
-        //            return CreatedAtRoute("GetUser", new { id = newUser.Id }, _service.returnWith200(newUser));
-        //        }
-
-        //        emailError.Error = "this email is already registered";
-        //        await Response.WriteAsJsonAsync(emailError);
-        //        return BadRequest(emailError);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
-
-        //[HttpPost("login")]
-        //public async Task<ActionResult> Login(UserLogin loginData)
-        //{
-        //    var okReturn = new statusReturn();
-        //    try
-        //    {
-        //        if (loginData.Token != null)
-        //        {
-        //            if (_service.ValidateToken(loginData.Token))
-        //            {
-        //                okReturn.Status = Response.StatusCode;
-        //                return Ok(okReturn);
-        //            }
-        //            else { return Unauthorized(); }
-        //        }
-        //        else if (loginData.Email != null && loginData.Pass != null)
-        //        {
-        //            var user = await _service.GetAsync(null, loginData.Email);
-        //            if (user == null) { return NotFound(); }
-
-        //            if (user.Email == loginData.Email && user.Pass == loginData.Pass)
-        //            {
-        //                loginData data = new loginData();
-
-        //                data.Id = user.Id;
-        //                data.Name = user.Name;
-        //                data.Token = _service.TokenCreate(user.Email);
-
-        //                await Response.WriteAsJsonAsync(data);
-        //                return Ok(data);
-        //            }
-        //        }
-        //        return BadRequest();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+                await _service.CreateAsync(newOrder);
+                return CreatedAtRoute("GetUser", new { id = newOrder.Id }, _service.returnWith200(newOrder));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpDelete("{id:length(24)}")]
         public async Task<ActionResult> Delete(string id)

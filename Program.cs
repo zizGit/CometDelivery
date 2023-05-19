@@ -88,10 +88,8 @@ app.MapGet("/", () => "Hello World!\nTo close this program, follow this link: ..
                      + "\n.../api/products/[shop]/[section] - GET"
                      + "\n.../api/products/[id:length(24)]  - PUT, DELETE"
                      + "\n.../api/products/new              - POST\n"
-                     + "\n.../api/orders                    - GET, POST, PUT, DELETE"
-                     + "\n.../api/orders                    - GET, POST, PUT, DELETE"
-                     + "\n.../api/orders                    - GET, POST, PUT, DELETE"
-                     + "\n.../api/orders                    - GET, POST, PUT, DELETE");
+                     + "\n.../api/orders                    - GET, POST"
+                     + "\n.../api/orders/[id:length(24)]    - GET, DELETE");
 
 app.MapGet("/exit/", () => Environment.Exit(0));
 

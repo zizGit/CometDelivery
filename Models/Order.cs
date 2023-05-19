@@ -44,4 +44,9 @@ namespace CometFoodDelivery.Models
         public string? Email { get; set; }
         public string? Phone { get; set; }
     }
+    public class orderErrorReturn
+    {
+        public int Status { get; } = 400;
+        public orderData? Errors { get; set; }
+    }
 }
