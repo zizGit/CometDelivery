@@ -27,16 +27,9 @@ namespace CometFoodDelivery.Models
         [BsonElement("imageUrl")]
         public string imageUrl { get; set; }
     }
-
     public class ProductShopAndType 
     {
         public string? Shop { get; set; }
         public string Type { get; set; }
-    }
-
-    public class errorProductReturn
-    {
-        public int Status { get; } = 400;
-        public string Error { get; } = "this product is already registered in this shop";
     }
 }

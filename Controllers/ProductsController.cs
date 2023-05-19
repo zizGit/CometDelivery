@@ -78,7 +78,7 @@ namespace CometFoodDelivery.Controllers
         [HttpPost("new")]
         public async Task<ActionResult<Product>> Post(Product newProduct)
         {
-            var productError = new errorProductReturn();
+            var productError = new errorReturn();
             try
             {
                 var product = await _service.GetByShopTypeNameAsync(newProduct.Shop, newProduct.Type, newProduct.Name);
@@ -87,6 +87,7 @@ namespace CometFoodDelivery.Controllers
                     await _service.CreateAsync(newProduct);
                     return CreatedAtRoute("GetProductByShop", new { shop = newProduct.Shop }, newProduct);
                 }
+                productError.Error = "this product is already registered in this shop";
                 await Response.WriteAsJsonAsync(productError);
                 return BadRequest(productError);
             }

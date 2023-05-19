@@ -33,10 +33,12 @@ host.RunAsync();
 
 builder.Services.Configure<DatabaseConnectionStringSettings>(builder.Configuration.GetSection("DatabaseConnectionString"))
                 .Configure<UserDatabaseSettings>(builder.Configuration.GetSection("UserDatabase"))
+                .Configure<OrderDatabaseSettings>(builder.Configuration.GetSection("OrderDatabase"))
                 .Configure<ShopsDatabaseSettings>(builder.Configuration.GetSection("ShopsDatabase"))
                 .Configure<ProductsDatabaseSettings>(builder.Configuration.GetSection("ProductsDatabase"));
 
 builder.Services.AddSingleton<UsersService>()
+                .AddSingleton<OrderService>()
                 .AddSingleton<ShopService>()
                 .AddSingleton<ProductService>();
 
@@ -85,7 +87,11 @@ app.MapGet("/", () => "Hello World!\nTo close this program, follow this link: ..
                      + "\n.../api/products/[shop]           - GET"
                      + "\n.../api/products/[shop]/[section] - GET"
                      + "\n.../api/products/[id:length(24)]  - PUT, DELETE"
-                     + "\n.../api/products/new              - POST");
+                     + "\n.../api/products/new              - POST\n"
+                     + "\n.../api/orders                    - GET, POST, PUT, DELETE"
+                     + "\n.../api/orders                    - GET, POST, PUT, DELETE"
+                     + "\n.../api/orders                    - GET, POST, PUT, DELETE"
+                     + "\n.../api/orders                    - GET, POST, PUT, DELETE");
 
 app.MapGet("/exit/", () => Environment.Exit(0));
 

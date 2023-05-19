@@ -38,10 +38,4 @@ namespace CometFoodDelivery.Models
         public double deliveryCost { get; set; }
         public List<int> deliveryTime { get; set; }
     }
-
-    public class errorShopReturn
-    {
-        public int Status { get; } = 400;
-        public string Error { get; } = "this shop is already registered";
-    }
 }

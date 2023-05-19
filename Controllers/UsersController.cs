@@ -39,13 +39,12 @@ namespace CometFoodDelivery.Controllers
         public async Task<ActionResult<User>> Post(User newUser)
         {
             var data = new registerData();
-            var emailError = new errorEmailReturn();
-
+            var emailError = new errorReturn();
             try
             {
                 if (!_service.registrationAndUpdateRules(newUser, ref data)) 
                 {
-                    var responce = new errorReturn { Errors = data };
+                    var responce = new registerErrorReturn { Errors = data };
                     await Response.WriteAsJsonAsync(responce);
                     return BadRequest(responce);
                 }
@@ -57,6 +56,7 @@ namespace CometFoodDelivery.Controllers
                     return CreatedAtRoute("GetUser", new { id = newUser.Id }, _service.returnWith200(newUser));
                 }
 
+                emailError.Error = "this email is already registered";
                 await Response.WriteAsJsonAsync(emailError);
                 return BadRequest(emailError);
             }
@@ -117,7 +117,7 @@ namespace CometFoodDelivery.Controllers
                 if (user == null) { return NotFound(); }
                 if (!_service.registrationAndUpdateRules(updatedUser, ref data))
                 {
-                    var responce = new errorReturn { Errors = data };
+                    var responce = new registerErrorReturn { Errors = data };
                     await Response.WriteAsJsonAsync(responce);
                     return BadRequest(responce);
                 }
