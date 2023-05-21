@@ -65,7 +65,7 @@ namespace CometFoodDelivery.Services
         {
             var regex1 = new Regex(@"([a-z])");
             var regex2 = new Regex(@"([A-Z])");
-            var regex3 = new Regex(@"([0 - 9])");
+            var regex3 = new Regex(@"([0-9])");
             //var regex4 = new Regex(@"([!,@,#,$,%,^,&,*,?,_,~])");
             string[] allowableEmail = { ".com", ".net", ".ua" };
 
