@@ -127,9 +127,11 @@
     img {
       width: 90px;
       height: 90px;
+      object-fit: contain;
     }
 
     h3 {
+      padding-right: 15px;
       font-family: "Inter";
       font-style: normal;
       font-weight: 500;

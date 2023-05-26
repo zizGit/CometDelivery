@@ -1,15 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./Registation.module.scss";
-import { redirect } from "react-router-dom";
-import { authUser } from "../../api/axios/core";
 
-export default function Login({ setLoginForm }) {
+import { authUser } from "../../api/axios/core";
+import { useDispatch } from "react-redux";
+import { setLogin } from "../../redux/slices/loginSlice";
+
+export default function Login({ setLoginForm, setVisiblePopUp }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [error, setError] = useState("");
+  const dispatch = useDispatch();
+  const setUserAuth = (param) => {
+    dispatch(setLogin(param));
+  };
+  const onChangePass = (event) => {
+    setPassword(event.target.value);
+    setError("");
+  };
+  const onChangeEmail = (event) => {
+    setEmail(event.target.value);
+    setError("");
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
-    authUser(password, email);
+    authUser({
+      path: "login",
+      password,
+      email,
+      setVisiblePopUp,
+      setUserAuth,
+      setError,
+    });
   };
 
   return (
@@ -29,23 +50,26 @@ export default function Login({ setLoginForm }) {
         <label htmlFor="email">
           Email
           <input
-            type="text"
+            required
+            type="email"
             placeholder="Email"
             id="email"
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={onChangeEmail}
           />
         </label>
         <label htmlFor="pass">
           Password
           <input
-            type="text"
+            required
+            type="password"
             placeholder="Password"
             id="pass"
             value={password}
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={onChangePass}
           />
-        </label>
+        </label>{" "}
+        {error && <p>{error}</p>}{" "}
         <button className={styles.submit}>Log in with email</button>
       </form>
     </>

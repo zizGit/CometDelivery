@@ -28,29 +28,6 @@
     border: 1px solid #eea840;
     // border-radius: 13px;
   }
-  button {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 13px 20px 13px 26px;
-    gap: 5px;
-
-    font-family: "Inter";
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 22px;
-    /* identical to box height, or 138% */
-
-    letter-spacing: 0.2px;
-
-    color: #2c3d78;
-
-    background: #eea840;
-    border-radius: 13px;
-    border: none;
-    cursor: pointer;
-  }
 }
 .logo {
   width: 138px;

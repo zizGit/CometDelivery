@@ -40,3 +40,47 @@
     opacity: 0.8;
   }
 }
+.popup {
+  position: absolute;
+  top: 50px;
+  padding: 20px 0;
+  left: 0;
+  background-color: white;
+  border-radius: 20px;
+  width: 100%;
+
+  background: #ffffff;
+
+  /* drop */
+
+  box-shadow: 0px 14px 20px rgba(131, 119, 198, 0.11);
+  border-radius: 22px;
+
+  a {
+    display: block;
+
+    padding: 10px 0;
+    padding-left: 20px;
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    /* identical to box height, or 138% */
+
+    letter-spacing: 0.2px;
+    border-radius: 10px;
+    color: #2c3d78;
+
+    text-decoration: none;
+    &:hover {
+      background: rgba(199, 209, 244, 0.32);
+      cursor: pointer;
+    }
+    &.selected {
+      border: #2c3d78 2px solid;
+      background: rgba(199, 209, 244, 0.32);
+      cursor: pointer;
+    }
+  }
+}

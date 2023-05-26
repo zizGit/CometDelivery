@@ -22,6 +22,7 @@ export default function ShoppingCart({ isOrder }) {
             name={obj.name}
             price={obj.price}
             count={obj.count}
+            imageUrl={obj.imageUrl}
           />
         ))}
       </div>

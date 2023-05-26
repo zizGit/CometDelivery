@@ -35,14 +35,13 @@ export default function AppRoutes() {
       ) : (
         <>
           <Route path="/partner" element={<PartnerPage />} />
-          <Route path="*" element={<MainPage />} />
-          {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
+
+          <Route path="/establishment" element={<Navigate to="/" replace />} />
+          <Route path="/*" element={<Navigate to="/" replace />} />
         </>
       )}
       <Route path="/partner" element={<PartnerPage />} />
       <Route path="/" element={<MainPage />} />
-
-      {/* */}
     </Routes>
   );
 }

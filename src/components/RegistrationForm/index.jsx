@@ -35,9 +35,15 @@ export default function RegistrationForm({ setVisiblePopUp }) {
           />
         </svg>
         {isLoginForm ? (
-          <Login setLoginForm={setLoginForm} />
+          <Login
+            setLoginForm={setLoginForm}
+            setVisiblePopUp={setVisiblePopUp}
+          />
         ) : (
-          <Register setLoginForm={setLoginForm} />
+          <Register
+            setLoginForm={setLoginForm}
+            setVisiblePopUp={setVisiblePopUp}
+          />
         )}
       </div>
     </div>

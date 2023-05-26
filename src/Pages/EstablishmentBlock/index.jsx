@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./EstablishmentBlock.module.scss";
 import Categories from "../../components/Categories";
-import axios from "axios";
+
 import RestorantBlock from "../../components/RestorantBlock";
 import Skeleton from "../../components/RestorantBlock/Skeleton";
 import { useSelector } from "react-redux";
@@ -10,18 +10,21 @@ export default function EstablishmentBlock() {
   const { category } = useSelector((state) => state.categorySlice);
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState([]);
+
   useEffect(() => {
     setIsLoading(true);
-    getRestorants(setItems, setIsLoading);
+    getRestorants(setItems, setIsLoading, category.name);
   }, [category]);
-  const restorants = items.map((obj, id) => (
+
+  const restorants = items.map((obj) => (
     <RestorantBlock
-      key={id}
+      key={obj.id}
       name={obj.name}
       imageUrl={obj.imageUrl}
       types={obj.types}
       deliveryCost={obj.deliveryCost}
       deliveryTime={obj.deliveryTime}
+      sections={obj.sections}
     />
   ));
   const skeleton = [...new Array(6)].map((_, index) => (
@@ -38,6 +41,7 @@ export default function EstablishmentBlock() {
         <h2>{category.name}</h2>
         <div className={styles.establishment__restorants}>
           {isLoading ? skeleton : restorants}
+          {restorants.length < 1 && <h2>Noting found... :(</h2>}
         </div>
       </div>
     </div>

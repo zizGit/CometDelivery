@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Search.module.scss";
+import SearchPopUp from "../../SearchPopup";
 
 function Search() {
   const [searchValue, setSearchValue] = useState("");
@@ -58,6 +59,13 @@ function Search() {
           <path d="M38 12.83l-2.83-2.83-11.17 11.17-11.17-11.17-2.83 2.83 11.17 11.17-11.17 11.17 2.83 2.83 11.17-11.17 11.17 11.17 2.83-2.83-11.17-11.17z" />
           <path d="M0 0h48v48h-48z" fill="none" />
         </svg>
+      )}
+      {searchValue && (
+        <SearchPopUp
+          styles={styles}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+        />
       )}
     </div>
   );

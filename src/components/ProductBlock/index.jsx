@@ -1,22 +1,23 @@
 import React from "react";
 import styles from "./ProductBlock.module.scss";
-import Food from "../../assets/FoodBlock/image 15.png";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/slices/cartSlice";
 
-export default function ProductBlock({ name, price }) {
+export default function ProductBlock({ name, price, imageUrl, id }) {
   const dispatch = useDispatch();
 
   return (
     <div className={styles.productblock}>
       <div className={styles.productblock__top}>
-        <img src={Food} alt="" />
+        <img src={imageUrl} alt="" />
         <h3>{name}</h3>
       </div>
       <p>
         {price} uan
-        <span onClick={() => dispatch(addToCart({ name, price }))}>
+        <span
+          onClick={() => dispatch(addToCart({ name, price, imageUrl, id }))}
+        >
           <svg
             width="10"
             height="10"

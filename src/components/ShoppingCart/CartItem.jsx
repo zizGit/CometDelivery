@@ -1,14 +1,14 @@
 import React from "react";
 import styles from "./ShoppingCart.module.scss";
-import Food from "../../assets/FoodBlock/image 15.png";
-import { useDispatch, useSelector } from "react-redux";
+
+import { useDispatch } from "react-redux";
 import {
   addToCart,
   decreaseFromCart,
   removeFromCart,
 } from "../../redux/slices/cartSlice";
 
-export default function CartItem({ name, price, count }) {
+export default function CartItem({ name, price, count, imageUrl }) {
   const dispatch = useDispatch();
 
   return (
@@ -32,7 +32,7 @@ export default function CartItem({ name, price, count }) {
         </svg>
       </span>
       <div className={styles.productblock__top}>
-        <img src={Food} alt="" />
+        <img src={imageUrl} alt="" />
         <h3>{name}</h3>
       </div>
       <div className={styles.productblock__bottom}>

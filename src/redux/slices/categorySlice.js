@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   category: { name: "Fast Food", id: 0 },
-  section: { name: "", id: -1 },
-  retorant: "",
+  restorant: { name: "", imageUrl: "", sections: [] },
+  activeSection: { name: "", id: 0 },
 };
 
 const categorySlice = createSlice({
@@ -13,15 +13,21 @@ const categorySlice = createSlice({
     setCategory(state, action) {
       state.category = action.payload;
     },
-    setSection(state, action) {
-      state.section = action.payload;
-    },
+    // setSections(state, action) {
+    //   state.restorant.sections = [...action.payload];
+    //   state.activeSection = { name: action.payload[0], id: 0 };
+    // },
     setRestorant(state, action) {
-      state.retorant = action.payload;
+      state.restorant = action.payload;
+      state.activeSection = { name: action.payload.sections[0], id: 0 };
+    },
+    setActiveSection(state, action) {
+      state.activeSection = action.payload;
     },
   },
 });
 
-export const { setCategory, setSection, setRestorant } = categorySlice.actions;
+export const { setCategory, setSections, setRestorant, setActiveSection } =
+  categorySlice.actions;
 
 export default categorySlice.reducer;

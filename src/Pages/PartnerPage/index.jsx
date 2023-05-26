@@ -24,29 +24,29 @@ export default function PartnerPage() {
               Registering with Сomet is a matter of a few minutes. Become our
               partner today
             </p>
-            <label for="adress">
+            <label htmlFor="adress">
               Adress
               <input type="text" id="adress" />
             </label>
-            <label for="business_name">
+            <label htmlFor="business_name">
               Business Name
               <input type="text" id="business_name" />
             </label>
             <div className={styles.form__names}>
-              <label for="first_name">
+              <label htmlFor="first_name">
                 First Name
                 <input type="text" id="first_name" />
               </label>
-              <label for="last_name">
+              <label htmlFor="last_name">
                 Last Name
                 <input type="text" id="last_name" />
               </label>
             </div>
-            <label for="email">
+            <label htmlFor="email">
               Email
               <input type="email" id="email" />
             </label>
-            <label for="phone_number">
+            <label htmlFor="phone_number">
               Phone number
               <input type="email" id="phone_number" />
             </label>
